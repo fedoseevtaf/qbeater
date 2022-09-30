@@ -14,6 +14,6 @@ Drum machine with electronic sound.
 
 ### Project manager
 
-- Mathematician2000
-
-[<img src='https://avatars.githubusercontent.com/u/43710527?v=4' alt='Visit the profile' width='100' height='100'/>](https://github.com/Mathematician2000)
+>Mathematician2000
+>---
+>[<img src='https://avatars.githubusercontent.com/u/43710527?v=4' alt='Visit the profile' width='100' height='100'/>](https://github.com/Mathematician2000)
