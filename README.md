@@ -2,6 +2,21 @@
 
 Drum machine with electronic sound.
 
+## Development Plan
+
+### Tasks
+
+---
+- [ ] Create repository
+- [ ] Describe the SRS
+- [ ] create the core
+- [ ] Create a minimal UI
+- [ ] Make MVP
+- [ ] Create the full UI
+- [ ] Join UI and core
+- [ ] Pack the project with PyInstaller
+---
+
 ## Dependencies
 
 - PyQt5
