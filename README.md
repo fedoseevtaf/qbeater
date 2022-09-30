@@ -6,16 +6,14 @@ Drum machine with electronic sound.
 
 ### Tasks
 
----
-- [ ] Create repository
-- [ ] Describe the SRS
-- [ ] create the core
-- [ ] Create a minimal UI
-- [ ] Make MVP
-- [ ] Create the full UI
-- [ ] Join UI and core
-- [ ] Pack the project with PyInstaller
----
+> - [ ] Create repository 
+> - [ ] Describe the SRS 
+> - [ ] create the core 
+> - [ ] Create a minimal UI 
+> - [ ] Make MVP 
+> - [ ] Create the full UI 
+> - [ ] Join UI and core 
+> - [ ] Pack the project with PyInstaller
 
 ## Dependencies
 
