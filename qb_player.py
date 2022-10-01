@@ -13,10 +13,9 @@ class SoundIsUnfined(Exception):
 
 class Player():
 
-    def __init__(self, time_sign: tuple[int] = (3, 4), bpm: int = 90, tact_n: int = 20) -> None:
+    def __init__(self, *args, time_sign: tuple[int] = (3, 4), bpm: int = 90, tact_n: int = 3) -> None:
         self.size = time_sign
         self.bpm = bpm
-
         self.tact_n = tact_n
 
         self._period = 60 / self.bpm / (self.size[1] / 4)
@@ -24,9 +23,8 @@ class Player():
         self._timer.timeout.connect(self.play)
 
         self.sounds = list()
-        self.titles = list()
 
-        self._sample = Sample(self.sounds, self.titles, tact_l=self.size[0], tact_n=tact_n)
+        self._sample = Sample(self.sounds, tact_l=self.size[0], tact_n=tact_n)
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
 
     def play(self) -> None:
@@ -46,9 +44,9 @@ class Player():
         self.bpm = bpm
         self._period = 60 / self.bpm / (self.size[1] / 4)
 
-    def resize(self, time_sign: tuple[int] = (3, 2), tact_n: int = 20) -> None:
+    def resize(self, time_sign: tuple[int] = (3, 2), tact_n: int = 3) -> None:
         self.size = time_sign[0], 2 ** time_sign[1]
-        self._nbeats_limit = nbeats_limit
+        self.tact_n = tact_n
         self._period = 60 / self.bpm / (self.size[1] / 4)
         self._sample.resize(tact_l=self.size[0], tact_n=(tact_n))
 
@@ -59,7 +57,7 @@ class Player():
         self._sample.reset()
 
     def turn(self) -> None:
-        self.mode ^= True
+        self.mode = not self.mode
         self.play()
 
     def turn_on(self) -> None:
@@ -72,18 +70,15 @@ class Player():
     def clear(self) -> None:
         self._sample.clear()
 
-    def add(self, sound_path: str, sound_title: str = 'Sound') -> None:
+    def add_sound(self, sound_path: str) -> None:
         try:
             sound = QSound(sound_path)
         except:
-            raise SoundIsUnfined
+            raise SoundIsUnfined('')
         self._sample.append(sound, sound_title)
 
-    def rem(self, sound_index: int) -> None:
+    def rem_sound(self, sound_index: int) -> None:
         self._sample.remove(sound_index)
-
-    def titles(self) -> Iterable:
-        yield from self.titles
 
     def tact_n(self) -> int:
         return self._sample.tact_n
