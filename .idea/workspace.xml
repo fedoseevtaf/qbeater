@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e17030e5-f261-48ee-b508-562312ae8f3f" name="Changes" comment="Add reset method to ColoredButton. It makes button visual unpressed.">
+    <list default="true" id="e17030e5-f261-48ee-b508-562312ae8f3f" name="Changes" comment="Prototype">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qb_player.py" beforeDir="false" afterPath="$PROJECT_DIR$/qb_player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qb_ptyp.py" beforeDir="false" afterPath="$PROJECT_DIR$/qb_ptyp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qb_sample.py" beforeDir="false" afterPath="$PROJECT_DIR$/qb_sample.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,7 +20,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="prot_dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,6 +65,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.qb_ptyp" />
+        <item itemvalue="Python.qb_ptyp" />
         <item itemvalue="Python.qb_ptyp" />
       </list>
     </recent_temporary>
@@ -129,7 +129,21 @@
       <option name="project" value="LOCAL" />
       <updated>1664654622056</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Bug fix">
+      <created>1664656189638</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1664656189638</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Prototype">
+      <created>1664656201164</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1664656201164</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -166,6 +180,8 @@
     <MESSAGE value="Write SoundHeader and test it" />
     <MESSAGE value="Write SoundLine and test it" />
     <MESSAGE value="Add reset method to ColoredButton. It makes button visual unpressed." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add reset method to ColoredButton. It makes button visual unpressed." />
+    <MESSAGE value="Bug fix" />
+    <MESSAGE value="Prototype" />
+    <option name="LAST_COMMIT_MESSAGE" value="Prototype" />
   </component>
 </project>

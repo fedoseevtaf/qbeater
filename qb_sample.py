@@ -3,7 +3,7 @@ from typing import Iterable
 
 class Sample():
 
-    def __init__(self, sounds: list, titles: list, *args,
+    def __init__(self, sounds: list, *args,
                  tact_l: int = 3, tact_n: int = 4) -> None:
         '''\
         'tact_l' - length of tact
@@ -26,15 +26,14 @@ class Sample():
 
         self.sounds = sounds
         self.mapping = list()
-        self.titles = titles
 
     def switch(self, sound_index: int, beat_index: int) -> None:
         '''\
         The 'switch' should be used to turn on/off
         defined sound at defined tact.
         '''
-
-        self.mapping[sound_index][beat_index] ^= True
+        if 0 <= sound_index < self._sounds_len and 0 <= beat_index < self._sample_len:
+            self.mapping[sound_index][beat_index] ^= 1
 
     def beat(self) -> Iterable:
         '''\
@@ -53,10 +52,7 @@ class Sample():
 
     def clear(self) -> None:
         self.mapping.clear()
-        self.mapping.extend(bytearray() for _ in range(self._sounds_len))
-        for beat_map in self.mapping:
-            beat_map.clear()
-            beat_map.extend(False for _ in range(self._sample_len))
+        self.mapping.extend(bytearray(self._sample_len) for _ in range(self._sounds_len))
 
     def resize(self, tact_l: int, tact_n: int = None) -> None:
         '''\
@@ -75,17 +71,13 @@ class Sample():
         self._sample_len = tact_l * tact_n
         self.clear()
 
-    def append(self, sound: object, title: str = 'Sound') -> None:
+    def append(self, sound: object) -> None:
         self.sounds.append(sound)
-        self.titles.append(title)
         self.mapping.append(bytearray(self._sample_len))
-
         self._sounds_len += 1
 
     def remove(self, sound_index: int) -> None:
         if 0 <= sound_index < self._sounds_len:
             self.sounds.pop(index)
-            self.titles.pop(index)
             self.mapping.pop(index)
-
-        self._sounds_len -= 1
+            self._sounds_len -= 1
