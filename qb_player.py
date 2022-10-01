@@ -13,11 +13,11 @@ class SoundIsUnfined(Exception):
 
 class Player():
 
-    def __init__(self, time_sign: tuple[int] = (3, 4), bpm: int = 90, nbeats_limit: int = 20) -> None:
+    def __init__(self, time_sign: tuple[int] = (3, 4), bpm: int = 90, tact_n: int = 20) -> None:
         self.size = time_sign
         self.bpm = bpm
 
-        self._nbeats_limit = nbeats_limit
+        self.tact_n = tact_n
 
         self._period = 60 / self.bpm / (self.size[1] / 4)
         self._timer = QTimer()
@@ -26,7 +26,6 @@ class Player():
         self.sounds = list()
         self.titles = list()
 
-        tact_n = (self._nbeats_limit // self.size[0]) * self.size[0]
         self._sample = Sample(self.sounds, self.titles, tact_l=self.size[0], tact_n=tact_n)
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
 
@@ -47,12 +46,11 @@ class Player():
         self.bpm = bpm
         self._period = 60 / self.bpm / (self.size[1] / 4)
 
-    def resize(self, time_sign: tuple[int] = (3, 2), nbeats_limit: int = 20) -> None:
+    def resize(self, time_sign: tuple[int] = (3, 2), tact_n: int = 20) -> None:
         self.size = time_sign[0], 2 ** time_sign[1]
         self._nbeats_limit = nbeats_limit
         self._period = 60 / self.bpm / (self.size[1] / 4)
-        tact_n = (self._nbeats_limit // self.size[0]) * self.size[0]
-        self._sample.resize(tact_l=self.size[0], tact_n=(tact_n)
+        self._sample.resize(tact_l=self.size[0], tact_n=(tact_n))
 
     def switch(self, sound_index: int, beat_index: int) -> None:
         self._sample.switch(sound_index, beat_index)
