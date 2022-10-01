@@ -3,8 +3,8 @@ from typing import Iterable
 
 class Sample():
 
-    def __init__(self, tact_l: int, tact_n: int,
-                 sounds: list, mapping: list, titles: list) -> None:
+    def __init__(self, sounds: list, titles: list, *args,
+                 tact_l: int = 3, tact_n: int: 4) -> None:
         '''\
         'tact_l' - length of tact
         'tact_n' - number of tacts in sample
@@ -25,7 +25,7 @@ class Sample():
         self._sounds_len = len(sounds)
 
         self.sounds = sounds
-        self.mapping = mapping
+        self.mapping = list()
         self.titles = titles
 
     def switch(self, sound_index: int, beat_index: int) -> None:
@@ -62,7 +62,7 @@ class Sample():
     def resize(self, tact_l: int, tact_n: int = None) -> None:
         '''\
         'resize' method shoud be used if you need to change:
-            <*> The 'musician' size. But only meter, because
+            <*> The time signature. But only meter, because
                 sample don't save note length.
             <*> The 'track' size (amount of tacts in the sample)
 
