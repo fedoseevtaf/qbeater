@@ -28,6 +28,8 @@ Drum machine with electronic sound.
 
 Prrogram with a drum-machine functionality
 
+![Preview](preview.png)
+
 ### About music
 
 #### Russian sources
