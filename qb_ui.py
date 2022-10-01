@@ -12,7 +12,7 @@ class ColoredButton(QPushButton):
         self.state = False
         self.clicked.connect(self._change_color)
 
-        self._default = 'background-color: #00b4ab'
+        self._default = 'background-color: #aab4ab'
         self._clicked = 'background-color: #fe7c00'
         self._set_color()
 
@@ -70,6 +70,7 @@ class SoundLine(QWidget):
                 btn.set_uniq()
             self.btns.append(btn)
             self.layout.addWidget(btn, 0, i + 1)
+            self.layout.setColumnStretch(i + 1, 1)
 
     def set_title(self, title: str) -> None:
         self.header.set_title(title)
@@ -82,6 +83,7 @@ class OptionsLine(QWidget):
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
+        self.setMinimumSize(500, 20)
 
         self.sound_title = QLineEdit(self)
         self.sound_title.setGeometry(0, 0, 100, 20)
