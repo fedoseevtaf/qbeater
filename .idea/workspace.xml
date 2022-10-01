@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e17030e5-f261-48ee-b508-562312ae8f3f" name="Changes" comment="Write SoundHeader and test it">
+    <list default="true" id="e17030e5-f261-48ee-b508-562312ae8f3f" name="Changes" comment="Write SoundLine and test it">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qb_ptyp.py" beforeDir="false" afterPath="$PROJECT_DIR$/qb_ptyp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qb_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/qb_ui.py" afterDir="false" />
@@ -114,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664644729164</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Write SoundLine and test it">
+      <created>1664648057617</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1664648057617</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -149,6 +156,7 @@
     <MESSAGE value="delete branch" />
     <MESSAGE value="Write ColoredButton and test tham" />
     <MESSAGE value="Write SoundHeader and test it" />
-    <option name="LAST_COMMIT_MESSAGE" value="Write SoundHeader and test it" />
+    <MESSAGE value="Write SoundLine and test it" />
+    <option name="LAST_COMMIT_MESSAGE" value="Write SoundLine and test it" />
   </component>
 </project>
