@@ -4,7 +4,7 @@ from typing import Iterable
 class Sample():
 
     def __init__(self, sounds: list, titles: list, *args,
-                 tact_l: int = 3, tact_n: int: 4) -> None:
+                 tact_l: int = 3, tact_n: int = 4) -> None:
         '''\
         'tact_l' - length of tact
         'tact_n' - number of tacts in sample
@@ -34,8 +34,7 @@ class Sample():
         defined sound at defined tact.
         '''
 
-        if (0 <= sound_index < self._sounds_len) and (0 <= beat_index < self._sample_len):
-            self.mapping[sound_index][beat_index] ^= True
+        self.mapping[sound_index][beat_index] ^= True
 
     def beat(self) -> Iterable:
         '''\
