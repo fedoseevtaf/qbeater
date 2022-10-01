@@ -7,9 +7,9 @@ Drum machine with electronic sound.
 ### Tasks
 
 > - [X] ~~Create repository~~ 
-> - [ ] Make the SRS
-> - [ ] Create the core
-> - [ ] Create a minimal UI
+> - [X] ~~Make the SRS~~
+> - [X] ~~Create the core~~
+> - [X] ~~Create a minimal UI~~
 > - [ ] Make MVP
 > - [ ] Create the full UI
 > - [ ] Create an electronic sounds
