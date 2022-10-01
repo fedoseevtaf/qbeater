@@ -86,3 +86,9 @@ class Player():
 
     def titles(self) -> Iterable:
         yield from self.titles
+
+    def tact_n(self) -> int:
+        return self._sample.tact_n
+
+    def tact_l(self) -> int:
+        return self._sample.tact_l
