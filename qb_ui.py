@@ -16,6 +16,10 @@ class ColoredButton(QPushButton):
         self._clicked = 'background-color: #fe7c00'
         self._set_color()
 
+    def reset(self) -> None:
+        self.state = False
+        self._set_color()
+
     def _set_color(self) -> None:
         if self.state:
             self.setStyleSheet(self._clicked)
