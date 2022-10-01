@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (
     QWidget, QGridLayout,
-    QPushButton, QLabel
+    QPushButton, QLabel, QVBoxLayout, QHBoxLayout
 )
 
 
@@ -21,3 +21,19 @@ class ColoredButton(QPushButton):
 
     def _set_default_color(self) -> None:
         self.setStyleSheet('background-color: #00b4ab')
+
+
+class SoundHeader(QWidget):
+
+    def __init__(self, *args) -> None:
+        super().__init__(*args)
+        self.label = QLabel(self)
+        self.label.setGeometry(0, 0, 100, 20)
+        self.btn = QPushButton(self)
+        self.btn.setText('remove')
+        self.btn.setGeometry(100, 0, 100, 20)
+
+        self.click = self.btn.clicked
+
+    def set_title(self, title: str) -> None:
+        self.label.setText(title)
