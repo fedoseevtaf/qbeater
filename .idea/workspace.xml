@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e17030e5-f261-48ee-b508-562312ae8f3f" name="Changes" comment="Sample functionality review. Titles handling is removed.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/qb_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/qb_ui.py" afterDir="false" />
-    </list>
+    <list default="true" id="e17030e5-f261-48ee-b508-562312ae8f3f" name="Changes" comment="Add ReaskForm" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -172,7 +169,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664657281147</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Add ReaskForm">
+      <created>1664659348841</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1664659348841</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -212,6 +216,7 @@
     <MESSAGE value="Bug fix" />
     <MESSAGE value="Prototype" />
     <MESSAGE value="Sample functionality review. Titles handling is removed." />
-    <option name="LAST_COMMIT_MESSAGE" value="Sample functionality review. Titles handling is removed." />
+    <MESSAGE value="Add ReaskForm" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add ReaskForm" />
   </component>
 </project>
