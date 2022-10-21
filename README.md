@@ -1,4 +1,4 @@
-# qbeater
+# <img src=icon.png alt='Visit the profile' width='25' height='25'/> qbeater
 
 Drum machine with electronic sound.
 
@@ -10,10 +10,9 @@ Drum machine with electronic sound.
 > - [X] ~~Make the SRS~~
 > - [X] ~~Create the core~~
 > - [X] ~~Create a minimal UI~~
-> - [ ] Make MVP
-> - [ ] Create the full UI
-> - [ ] Create an electronic sounds
+> - [X] ~~Create the full UI~~
 > - [ ] Join UI and core
+> - [ ] Create an electronic sounds
 > - [ ] Pack the project with PyInstaller
 > - [ ] Make the users introduction quide
 
