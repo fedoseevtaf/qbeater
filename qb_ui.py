@@ -1,3 +1,5 @@
+from typing import Iterator
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QWidget, QGridLayout, QFormLayout,
@@ -76,11 +78,17 @@ class SoundLine(QWidget):
             self.layout.addWidget(btn, 0, i + 1)
             self.layout.setColumnStretch(i + 1, 1)
 
+    def __iter__(self) -> Iterator:
+        return iter(self.btns)
+
     def set_title(self, title: str) -> None:
         self.header.set_title(title)
 
     def getbtn(self, i: int) -> ColoredButton:
         return self.btns[i]
+
+    def findbtn(self, btn: QPushButton) -> int:
+        return self.layout.indexOf(btn)
 
 
 class OptionsLine(QWidget):
