@@ -1,5 +1,4 @@
 from time import perf_counter as get_now
-from typing import Iterable
 
 from PyQt5.QtCore import QTimer
 from PyQt5.QtMultimedia import QSound
