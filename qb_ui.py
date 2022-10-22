@@ -138,31 +138,3 @@ class OptionsLine(QWidget):
         self.volume_value.setRange(0, 100)
         self.volume_value.setValue(50)
         self.volume_value.setGeometry(280, 20, 100, 20)
-
-
-class ReaskForm(QWidget):
-
-    def __init__(self, form: dict) -> None:
-        super().__init__()
-        self.setMinimumSize(100, 50)
-        self.setWindowTitle(' ')
-        self.form = form
-
-        self.layout = QGridLayout(self)
-        self.layout.addWidget(QLabel('Are you sure?'), 0, 0, 1, 2)
-
-        self.yes = QPushButton('Yes')
-        self.layout.addWidget(self.yes, 1, 0)
-        self.no = QPushButton('No')
-        self.layout.addWidget(self.no, 1, 1)
-
-        self.yes.clicked.connect(self._yes)
-        self.no.clicked.connect(self._no)
-
-    def _yes(self) -> None:
-        self.form['ans'] = True
-        self.destroy(True, True)
-
-    def _no(self) -> None:
-        self.form['ans'] = False
-        self.destroy(True, True)
