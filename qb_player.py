@@ -43,11 +43,11 @@ class Player():
         self.bpm = bpm
         self._period = 60 / self.bpm / (self.size[1] / 4)
 
-    def resize(self, time_sign: tuple[int] = (3, 2), tact_n: int = 3) -> None:
-        self.size = time_sign[0], 2 ** time_sign[1]
+    def resize(self, time_sign: tuple[int] = (3, 4), tact_n: int = 3) -> None:
+        self.size = time_sign
         self.tact_n = tact_n
         self._period = 60 / self.bpm / (self.size[1] / 4)
-        self._sample.resize(tact_l=self.size[0], tact_n=(tact_n))
+        self._sample.resize(tact_l=self.size[0], tact_n=tact_n)
 
     def switch(self, sound_index: int, beat_index: int) -> None:
         self._sample.switch(sound_index, beat_index)
