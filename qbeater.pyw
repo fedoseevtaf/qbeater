@@ -41,11 +41,13 @@ class DrumMachine_WindowComposer(QWidget):
         self._add_sound_line('q', 3, 4)
         self._add_sound_line('q', 3, 4)
 
-        self.options.add_sound.clicked.connect(self._clear)
-
     def _clear(self) -> None:
         for sound_line_id in frozenset(self._sound_lines_book):
             self._del_sound_line(sound_line_id)
+
+    def _hide_sound_lines(self) -> None:
+        for sound_line in self._sound_lines_book.values():
+            sound_line.hide()
 
     def _add_sound_line(self, title: str, tact_l: int, tact_n: int) -> None:
         sound_line = ui.SoundLine(tact_l=tact_l, tact_n=tact_n)

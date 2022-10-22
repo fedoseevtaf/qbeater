@@ -1,8 +1,9 @@
 from typing import Iterator
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
-    QWidget, QGridLayout, QFormLayout,
+    QWidget, QGridLayout,
     QPushButton, QLabel, QSpinBox, QSlider, QLineEdit
 )
 
@@ -46,7 +47,7 @@ class SoundHeader(QWidget):
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
-        self.label = QLabel(self)
+        self.label = QLineEdit(self)
         self.label.setGeometry(0, 0, 100, 20)
         self.btn = QPushButton(self)
         self.btn.setText('remove')
@@ -95,31 +96,44 @@ class OptionsLine(QWidget):
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
-        self.setMinimumSize(500, 20)
+        self.setMinimumSize(500, 40)
+
+        self.play_btn = QPushButton(self)
+        self.play_btn.setGeometry(0, 0, 40, 40)
+        self.play_btn.setIcon(QIcon('play_btn_icon.png'))
+
+        self.stop_btn = QPushButton(self)
+        self.stop_btn.setGeometry(40, 0, 40, 40)
+        self.stop_btn.setIcon(QIcon('stop_btn_icon.png'))
 
         self.sound_title = QLineEdit(self)
-        self.sound_title.setGeometry(0, 0, 100, 20)
+        self.sound_title.setGeometry(80, 20, 100, 20)
         self.add_sound = QPushButton('Add sound', self)
-        self.add_sound.setGeometry(100, 0, 100, 20)
+        self.add_sound.setGeometry(80, 0, 100, 20)
 
         self._bpm_label = QLabel('BPM:', self)
-        self._bpm_label.setGeometry(200, 0, 40, 20)
+        self._bpm_label.setAlignment(Qt.AlignHCenter)
+        self._bpm_label.setGeometry(180, 20, 40, 20)
         self.bpm_value = QSpinBox(self)
         self.bpm_value.setRange(10, 210)
         self.bpm_value.setValue(90)
-        self.bpm_value.setGeometry(240, 0, 60, 20)
+        self.bpm_value.setGeometry(220, 20, 60, 20)
 
         self.clearbtn = QPushButton('Clear', self)
-        self.clearbtn.setGeometry(300, 0, 50, 20)
+        self.clearbtn.setGeometry(180, 0, 50, 20)
 
         self.confbtn = QPushButton('Config', self)
-        self.confbtn.setGeometry(350, 0, 50, 20)
+        self.confbtn.setGeometry(230, 00, 50, 20)
+
+        self._volume_label = QLabel('Volume:', self)
+        self._volume_label.setAlignment(Qt.AlignHCenter)
+        self._volume_label.setGeometry(280, 0, 100, 20)
 
         self.volume_value = QSlider(self)
         self.volume_value.setOrientation(Qt.Horizontal)
         self.volume_value.setRange(0, 100)
         self.volume_value.setValue(50)
-        self.volume_value.setGeometry(400, 0, 100, 20)
+        self.volume_value.setGeometry(280, 20, 100, 20)
 
 
 class ReaskForm(QWidget):
