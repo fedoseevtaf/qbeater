@@ -78,6 +78,6 @@ class Sample():
 
     def remove(self, sound_index: int) -> None:
         if 0 <= sound_index < self._sounds_len:
-            self.sounds.pop(index)
-            self.mapping.pop(index)
+            del self.sounds[sound_index]
+            del self.mapping[sound_index]
             self._sounds_len -= 1

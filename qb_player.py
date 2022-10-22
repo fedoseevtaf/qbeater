@@ -13,6 +13,7 @@ class Player():
         self.size = time_sign
         self.bpm = bpm
         self.tact_n = tact_n
+        self._volume = 1.0
 
         self._period = 60 / self.bpm / (self.size[1] / 4)
         self._timer = QTimer()
@@ -47,6 +48,7 @@ class Player():
         sound_slot = lambda sound=sound: self._add_sound(sound)
         self._sounds_slots[id(sound)] = sound_slot
         sound.statusChanged.connect(sound_slot)
+        sound.setVolume(self._volume)
         sound.setSource(sound_path)
 
     def _add_sound(self, sound) -> None:
@@ -63,9 +65,14 @@ class Player():
     def set_new_sound_callback(self, callback: Callable) -> None:
         self._add_sound_callback = callback
 
-    def setbpm(self, bpm: int) -> None:
+    def set_bpm(self, bpm: int) -> None:
         self.bpm = bpm
         self._period = 60 / self.bpm / (self.size[1] / 4)
+
+    def set_volume(self, volume: float) -> None:
+        self._volume = volume
+        for sound in self.sounds:
+            sound.setVolume(volume)
 
     def resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
         self.size = time_sign

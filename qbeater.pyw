@@ -18,7 +18,7 @@ class DrumMachine_WindowComposer(QWidget):
 
         self.setWindowTitle('qbeater')
         self.setWindowIcon(QIcon('icon.png'))
-        self.setMinimumWidth(480)
+        self.setMinimumWidth(640)
 
         self.layout = QVBoxLayout(self)
         self.setLayout(self.layout)
@@ -107,12 +107,31 @@ class DrumMachine(DrumMachine_WindowComposer):
         super().__init__()
         self.player = qb.Player()
         self._load_basic_sounds()
+        self._set_volume()
+        self._set_bpm()
 
         self.options.add_sound.clicked.connect(self._add_sound)
         self.player.set_new_sound_callback(self._display_new_sound)
 
         self.options.play_btn.clicked.connect(self._play_clicked)
         self.options.stop_btn.clicked.connect(self._stop_clicked)
+
+        self.options.volume_value.valueChanged.connect(self._set_volume)
+        self.options.bpm_value.valueChanged.connect(self._set_bpm)
+        self.options.clear_btn.clicked.connect(self._clear)
+
+    def _clear(self) -> None:
+        for sound_line in self._sound_lines_book.values():
+            sound_line.clear()
+        self.player.clear()
+
+    def _set_bpm(self) -> None:
+        bpm = self.options.bpm_value.value()
+        self.player.set_bpm(bpm)
+
+    def _set_volume(self) -> None:
+        volume = self.options.volume_value.value() / 100
+        self.player.set_volume(volume)
 
     def _play_clicked(self) -> None:
         self.player.turn_on()

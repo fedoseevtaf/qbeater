@@ -82,6 +82,10 @@ class SoundLine(QWidget):
     def __iter__(self) -> Iterator:
         return iter(self.btns)
 
+    def clear(self) -> None:
+        for btn in self.btns:
+            btn.reset()
+
     def set_title(self, title: str) -> None:
         self.header.set_title(title)
 
