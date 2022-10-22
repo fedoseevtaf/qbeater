@@ -1,8 +1,10 @@
 from sys import argv
 
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout
+    QApplication, QWidget, QVBoxLayout,
+    QMessageBox
 )
 
 import qb_player as qb
@@ -15,11 +17,8 @@ class DrumMachine_WindowComposer(QWidget):
         super().__init__()
 
         self.setWindowTitle('qbeater')
-        try:
-            self.setWindowIcon(QIcon('icon.png'))
-        except:
-            pass #  Without icon
-        self.setMinimumWidth(550)
+        self.setWindowIcon(QIcon('icon.png'))
+        self.setMinimumWidth(480)
 
         self.layout = QVBoxLayout(self)
         self.setLayout(self.layout)
@@ -36,10 +35,6 @@ class DrumMachine_WindowComposer(QWidget):
         self._sound_btns_book = dict()
         # Sound line id: set(sound button id)
         self._sound_btns_by_lines_book = dict()
-
-        self._add_sound_line('q', 3, 4)
-        self._add_sound_line('q', 3, 4)
-        self._add_sound_line('q', 3, 4)
 
     def _clear(self) -> None:
         for sound_line_id in frozenset(self._sound_lines_book):
@@ -110,15 +105,41 @@ class DrumMachine(DrumMachine_WindowComposer):
 
     def __init__(self):
         super().__init__()
-        self._load_basic_preset()
+        self.player = qb.Player()
+        self._load_basic_sounds()
+
+        self.options.add_sound.clicked.connect(self._add_sound)
+        self.player.set_new_sound_callback(self._display_new_sound)
+
+        self.options.play_btn.clicked.connect(self._play_clicked)
+        self.options.stop_btn.clicked.connect(self._stop_clicked)
+
+    def _play_clicked(self) -> None:
+        self.player.turn_on()
+        self.player.play()
+
+    def _stop_clicked(self) -> None:
+        self.player.turn_off()
+        self.player.reset()
+
+    def _add_sound(self) -> None:
+        sound_path = self.options.sound_path.text()
+        if sound_path == '':
+            return
+        self.player.add_sound(sound_path)
+
+    def _display_new_sound(self, title: str) -> None:
+        self._add_sound_line(title, self.player.get_tact_l(), self.player.get_tact_n())
 
     def _del_sound_line_slot(self) -> None:
         sound_line_index = super()._del_sound_line_slot()
+        self.player.rem_sound(sound_line_index)
 
     def _sound_btn_clicked_slot(self) -> None:
         sound_line_index, sound_btn_index = super()._sound_btn_clicked_slot()
+        self.player.switch(sound_line_index, sound_btn_index)
 
-    def _load_basic_preset(self) -> None:
+    def _load_basic_sounds(self) -> None:
         pass
 
 

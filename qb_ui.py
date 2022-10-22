@@ -96,7 +96,7 @@ class OptionsLine(QWidget):
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
-        self.setMinimumSize(500, 40)
+        self.setMinimumSize(380, 40)
 
         self.play_btn = QPushButton(self)
         self.play_btn.setGeometry(0, 0, 40, 40)
@@ -106,8 +106,8 @@ class OptionsLine(QWidget):
         self.stop_btn.setGeometry(40, 0, 40, 40)
         self.stop_btn.setIcon(QIcon('stop_btn_icon.png'))
 
-        self.sound_title = QLineEdit(self)
-        self.sound_title.setGeometry(80, 20, 100, 20)
+        self.sound_path = QLineEdit(self)
+        self.sound_path.setGeometry(80, 20, 100, 20)
         self.add_sound = QPushButton('Add sound', self)
         self.add_sound.setGeometry(80, 0, 100, 20)
 
@@ -119,11 +119,11 @@ class OptionsLine(QWidget):
         self.bpm_value.setValue(90)
         self.bpm_value.setGeometry(220, 20, 60, 20)
 
-        self.clearbtn = QPushButton('Clear', self)
-        self.clearbtn.setGeometry(180, 0, 50, 20)
+        self.clear_btn = QPushButton('Clear', self)
+        self.clear_btn.setGeometry(180, 0, 50, 20)
 
-        self.confbtn = QPushButton('Config', self)
-        self.confbtn.setGeometry(230, 00, 50, 20)
+        self.conf_btn = QPushButton('Config', self)
+        self.conf_btn.setGeometry(230, 00, 50, 20)
 
         self._volume_label = QLabel('Volume:', self)
         self._volume_label.setAlignment(Qt.AlignHCenter)
