@@ -1,4 +1,4 @@
-# <img src=icon.png alt='Visit the profile' width='25' height='25'/> qbeater
+# <img src='icons/icon.png' alt='' width='25' height='25'/> qbeater
 
 Drum machine with electronic sound.
 
@@ -11,6 +11,7 @@ Drum machine with electronic sound.
 > - [X] ~~Create the core~~
 > - [X] ~~Create a minimal UI~~
 > - [X] ~~Create the full UI~~
+> - [X] ~~Make MVP~~
 > - [ ] Join UI and core
 > - [ ] Create an electronic sounds
 > - [ ] Pack the project with PyInstaller
@@ -27,7 +28,7 @@ Drum machine with electronic sound.
 
 Prrogram with a drum-machine functionality
 
-![Preview](preview.png)
+![Preview](stuff/preview.png)
 
 ### About music
 

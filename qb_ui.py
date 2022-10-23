@@ -104,11 +104,11 @@ class OptionsLine(QWidget):
 
         self.play_btn = QPushButton(self)
         self.play_btn.setGeometry(0, 0, 40, 40)
-        self.play_btn.setIcon(QIcon('play_btn_icon.png'))
+        self.play_btn.setIcon(QIcon('icons/play_btn_icon.png'))
 
         self.stop_btn = QPushButton(self)
         self.stop_btn.setGeometry(40, 0, 40, 40)
-        self.stop_btn.setIcon(QIcon('stop_btn_icon.png'))
+        self.stop_btn.setIcon(QIcon('icons/stop_btn_icon.png'))
 
         self.sound_path = QLineEdit(self)
         self.sound_path.setGeometry(80, 20, 100, 20)

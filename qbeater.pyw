@@ -1,11 +1,7 @@
 from sys import argv
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout,
-    QMessageBox
-)
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
 
 import qb_player as qb
 import qb_ui as ui
@@ -17,7 +13,7 @@ class DrumMachine_WindowComposer(QWidget):
         super().__init__()
 
         self.setWindowTitle('qbeater')
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon('icons/icon.png'))
         self.setMinimumWidth(700)
 
         self.layout = QVBoxLayout(self)
@@ -162,8 +158,7 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.player.switch(sound_line_index, sound_btn_index)
 
     def _load_basic_sounds(self) -> None:
-        self._add_sound('1.wav')
-        self._add_sound('2.wav')
+        pass
 
 
 if __name__ == '__main__':
