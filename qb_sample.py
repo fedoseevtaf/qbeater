@@ -106,7 +106,7 @@ class Sample():
             self._sounds_len -= 1
 
 
-class AbstarctPlayer():
+class AbstractPlayer():
     '''\
     Implement non-tech stuff.
 
