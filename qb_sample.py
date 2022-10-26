@@ -122,6 +122,7 @@ class AbstarctPlayer():
         '''\
         The 'time signature' is a musician term, read about it on wiki.
         https://en.wikipedia.org/wiki/Time_signature
+        The 'bpm' is a Beats Per Minute.
         '''
 
         self.time_sign = time_sign
@@ -147,6 +148,13 @@ class AbstarctPlayer():
         '''
 
         self._draw_sound_callback = callback
+
+    def set_bpm(self, bpm: int) -> None:
+        '''\
+        Read about bpm in __init__'s docs.
+        '''
+
+        self.bpm = bpm
 
     def resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
         '''\
