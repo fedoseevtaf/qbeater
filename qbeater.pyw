@@ -107,7 +107,7 @@ class DrumMachine(DrumMachine_WindowComposer):
         self._set_bpm()
 
         self.options.add_sound.clicked.connect(self._add_sound_clicked)
-        self.player.set_new_sound_callback(self._display_new_sound)
+        self.player.set_draw_sound_callback(self._display_new_sound)
 
         self.options.play_btn.clicked.connect(self._play_clicked)
         self.options.stop_btn.clicked.connect(self._stop_clicked)
@@ -135,15 +135,13 @@ class DrumMachine(DrumMachine_WindowComposer):
 
     def _stop_clicked(self) -> None:
         self.player.turn_off()
-        self.player.reset()
+        self.player.goto_start()
 
     def _add_sound_clicked(self):
         sound_path = self.options.sound_path.text()
         self._add_sound(sound_path)
 
     def _add_sound(self, sound_path: str) -> None:
-        if sound_path == '':
-            return
         self.player.add_sound(sound_path)
 
     def _display_new_sound(self, title: str) -> None:

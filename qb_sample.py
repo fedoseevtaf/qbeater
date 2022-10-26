@@ -48,7 +48,7 @@ class Sample():
         '''
 
         for sound_index, sound in enumerate(self._sounds):
-            if self._mapping[sound_index][self.actual_beat_num]:
+            if self._mapping[sound_index][self._actual_beat_num]:
                 yield sound
 
         self._actual_beat_num += 1
@@ -108,11 +108,9 @@ class Sample():
 
 class AbstractPlayer():
     '''\
-    Implement non-tech stuff.
-
     Word about displaying policy:
     The player has no tools for displaying the sound mapping
-    and providing ui. So for that reason the player use
+    and providing ui. Therefor the player use
     '_draw_sound_callback' to "notify" the ui that sound is
     successfully added to the sample.
     '''
@@ -133,7 +131,7 @@ class AbstractPlayer():
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
         self._draw_sound_callback = print
 
-    def add_sound(self, sound, draw_spec=None) -> None:
+    def _add_sound(self, sound, draw_spec=None) -> None:
         '''\
         Append sound to the sample and
         use the '_draw_sound_callback'
@@ -144,7 +142,7 @@ class AbstractPlayer():
         self._draw_sound_callback(draw_spec)
     def set_draw_sound_callback(self, callback: Callable) -> None:
         '''\
-        Read at the class's docs about the displaying policy.
+        Read at the class docs about the displaying policy.
         '''
 
         self._draw_sound_callback = callback
