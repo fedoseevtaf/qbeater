@@ -69,7 +69,7 @@ class Sample():
         self._mapping.clear()
         self._mapping.extend(bytearray(self._sample_len) for _ in range(self._sounds_len))
 
-    def resize(self, tact_l: int, tact_n: int = None) -> None:
+    def resize(self, tact_l: int, tact_n: int) -> None:
         '''\
         Change:
             <*> The time signature. But only meter, because
@@ -106,17 +106,64 @@ class Sample():
             self._sounds_len -= 1
 
 
-class AbstractPlayer():
-    '''\
-    Word about displaying policy:
-    The player has no tools for displaying the sound mapping
-    and providing ui. Therefor the player use
-    '_draw_sound_callback' to "notify" the ui that sound is
-    successfully added to the sample.
-    '''
+class AbstractSound():
 
-    def __init__(self, *args, time_sign: tuple[int] = (4, 8),
-                 bpm: int = 90, tact_n: int = 3) -> None:
+    def __init__(self, sound_obj: object) -> None:
+        pass
+
+    def play(self) -> None:
+        pass
+
+    def stop(self) -> None:
+        pass
+
+    def set_volume(self, volume: float) -> None:
+        pass
+
+    def source(self) -> str:
+        return 'None'
+
+
+class AbstractLoader():
+
+    def __init__(self) -> None:
+        self._install_sound = id
+        self._draw_sound = print
+
+    def load_sound(self, sound_path: str) -> None:
+        pass
+
+    def set_installer(self, installer: Callable) -> None:
+        self._install_sound = installer
+
+    def set_drawer(self, drawer: Callable) -> None:
+        self._draw_sound = drawer
+
+
+class AbstractSoundManager():
+
+    def __init_subclass__(cls, loader: AbstractLoader) -> None:
+        cls.__loader = loader
+
+    def _init_loader(self) -> None:
+        self._loader = type(self).__loader()
+        self._loader.set_installer(self._install_sound)
+        self._loader.set_drawer(print)
+
+    def add_sound(self, sound_path: str) -> None:
+        self._loader.load_sound(sound_path)
+
+    def set_draw_sound_callback(self, callback: Callable) -> None:
+        self._loader.set_drawer(callback)
+
+    def _install_sound(self, sound: AbstractSound) -> None:
+        pass
+
+
+class AbstractPlayer():
+
+    def _init_sample(self, *args, time_sign: tuple[int] = (4, 8),
+                     bpm: int = 90, tact_n: int = 3) -> None:
         '''\
         The 'time signature' is a musician term, read about it on wiki.
         https://en.wikipedia.org/wiki/Time_signature
@@ -127,26 +174,8 @@ class AbstractPlayer():
         self.bpm = bpm
 
         self._sounds = list()
-        self._sample = Sample(self._sounds, tact_l=self.time_sign[0], tact_n=tact_n)
+        self._sample: AbstractSample = Sample(self._sounds, tact_l=self.time_sign[0], tact_n=tact_n)
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
-        self._draw_sound_callback = print
-
-    def set_draw_sound_callback(self, callback: Callable) -> None:
-        '''\
-        Read at the class docs about the displaying policy.
-        '''
-
-        self._draw_sound_callback = callback
-
-    def add_sound(self, sound, draw_spec=None) -> None:
-        '''\
-        Append sound to the sample and
-        use the '_draw_sound_callback'
-        to display the new sound.
-        This function probably will be reimplemented.
-        '''
-
-        self._add_sound(sound, draw_spec)
 
     def set_bpm(self, bpm: int) -> None:
         '''\
@@ -164,14 +193,13 @@ class AbstractPlayer():
 
         self._resize(time_sign, tact_n)
 
-    def _add_sound(self, sound, draw_spec) -> None:
+    def _add_sound(self, sound) -> None:
         '''\
         Minimal implementation that probably will be used
         at 'add_widget' future implementation.
         '''
 
         self._sample.append(sound)
-        self._draw_sound_callback(draw_spec)
 
     def _set_bpm(self, bpm: int) -> None:
         '''\

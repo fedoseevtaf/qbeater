@@ -1,12 +1,32 @@
 from time import perf_counter as get_now
+from typing import Callable
 
 from PyQt5.QtCore import QTimer, QUrl
 from PyQt5.QtMultimedia import QSoundEffect
 
-from qb_sample import AbstractPlayer
+from qb_sample import AbstractPlayer, AbstractSoundManager, AbstractSound, AbstractLoader
 
 
-class Player(AbstractPlayer):
+
+class Sound(AbstractSound):
+
+    def __init__(self, sound_obj: QSoundEffect) -> None:
+        self.sound_obj = sound_obj
+
+    def play(self) -> None:
+        self.sound_obj.play()
+
+    def stop(self) -> None:
+        self.sound_obj.stop()
+
+    def set_volume(self, volume: float) -> None:
+        self.sound_obj.setVolume(volume)
+
+    def source(self) -> str:
+        return self.sound_obj.source().path()
+
+
+class SoundLoader(AbstractLoader):
     '''\
     Word about sound's adding policy:
     QSoundEffect load data asynchronously and don't raise the Exceptions.
@@ -32,21 +52,18 @@ class Player(AbstractPlayer):
     disconnects sound's status changing to the lambda-slot and removes it
     out the '_sounds_slots'.
 
-    Read also the "Word about displaying policy" in the AbstractPlayer docs.
+    Word about displaying policy:
+    The player has no tools for displaying the sound mapping
+    and providing ui. Therefor the player use
+    '_draw_sound_callback' to "notify" the ui that sound is
+    successfully added to the sample.
     '''
 
-    def __init__(self, *args, time_sign: tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
-        super().__init__(time_sign=time_sign, bpm=bpm, tact_n=tact_n)
-        self._is_turned_on = False
-
-        self._period = 60 / self.bpm / (self.time_sign[1] / 4)
-        self._timer = QTimer()
-        self._timer.timeout.connect(self.play)
-
+    def __init__(self) -> None:
         self._sounds_queue = dict()
         self._sounds_slots = dict()
 
-    def add_sound(self, sound_path: str) -> None:
+    def load_sound(self, sound_path: str) -> None:
         '''\
         Read a "Word about sound's adding policy" in the class docs.
         '''
@@ -64,29 +81,21 @@ class Player(AbstractPlayer):
         self._store_in_queue(sound)
         sound.setSource(QUrl.fromLocalFile(sound_path))
 
-    def _sound_is_loaded(self, sound) -> None:
+    def _sound_is_loaded(self, sound: QSoundEffect) -> None:
         '''\
         Read a "Word about sound's adding policy" in the class docs.
         '''
 
-        if sound.status() < 2:
-            #  Sound isn't loaded.
-            return
-        self._install_sound(sound)
+        if sound.status() > 1: #  Sound is loaded
+            self._remove_out_queue(sound)
 
-    def _install_sound(self, sound) -> None:
-        '''\
-        Read a "Word about sound's adding policy" in the class docs.
-        '''
-
-        self._remove_out_queue(sound)
-        if sound.status() != 2: #  Ready status
-            return #  Sound is droped
-        self._add_sound(sound, sound.source().path())
-        sound.setVolume(self._volume)
+        if sound.status() == 2: #  Sound is corect
+            sound = Sound(sound)
+            self._install_sound(sound)
+            self._draw_sound(sound)
 
     def _store_in_queue(self, sound: QSoundEffect) -> None:
-        '''\
+        '''\C:/users/user/desktop/1.wav
         Read a "Word about sound's adding policy" in the class docs.
         '_store_in_queue' stores the sound in the '_sounds_queue' to avoid deletion
         by the garbage collector, connects sound's status changing to the '_sound_is_loaded'
@@ -106,6 +115,24 @@ class Player(AbstractPlayer):
         del self._sounds_queue[id(sound)]
         sound.statusChanged.disconnect(self._sounds_slots[id(sound)])
         del self._sounds_slots[id(sound)]
+
+
+class Player(AbstractPlayer, AbstractSoundManager, loader=SoundLoader):
+
+    def __init__(self, *args, time_sign: tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
+        self._init_sample(time_sign=time_sign, bpm=bpm, tact_n=tact_n)
+        self._init_loader()
+
+        self._volume = 0
+        self._is_turned_on = False
+
+        self._period = 60 / self.bpm / (self.time_sign[1] / 4)
+        self._timer = QTimer()
+        self._timer.timeout.connect(self.play)
+
+    def _install_sound(self, sound: AbstractSound) -> None:
+        self._add_sound(sound)
+        sound.set_volume(self._volume)
 
     def play(self) -> None:
         '''\
@@ -162,7 +189,7 @@ class Player(AbstractPlayer):
 
         self._volume = volume
         for sound in self._sounds:
-            sound.setVolume(volume)
+            sound.set_volume(volume)
 
     def turn(self) -> None:
         '''\

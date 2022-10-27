@@ -144,8 +144,8 @@ class DrumMachine(DrumMachine_WindowComposer):
     def _add_sound(self, sound_path: str) -> None:
         self.player.add_sound(sound_path)
 
-    def _display_new_sound(self, title: str) -> None:
-        self._add_sound_line(title, self.player.get_tact_l(), self.player.get_tact_n())
+    def _display_new_sound(self, sound) -> None:
+        self._add_sound_line(sound.source(), self.player.get_tact_l(), self.player.get_tact_n())
 
     def _del_sound_line_slot(self) -> None:
         sound_line_index = super()._del_sound_line_slot()
