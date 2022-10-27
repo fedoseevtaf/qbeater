@@ -131,15 +131,26 @@ class AbstractPlayer():
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
         self._draw_sound_callback = print
 
-    def _add_sound(self, sound, draw_spec=None) -> None:
+    def add_sound(self, sound, draw_spec=None) -> None:
         '''\
         Append sound to the sample and
         use the '_draw_sound_callback'
         to display the new sound.
+
+        This function probably will be reimplemented.
+        '''
+
+        self._add_sound(sound, draw_spec)
+
+    def _add_sound(self, sound, draw_spec) -> None:
+        '''\
+        Minimal implementation that probably will be used
+        at 'add_widget' future implementation.
         '''
 
         self._sample.append(sound)
         self._draw_sound_callback(draw_spec)
+
     def set_draw_sound_callback(self, callback: Callable) -> None:
         '''\
         Read at the class docs about the displaying policy.
