@@ -131,16 +131,38 @@ class AbstractPlayer():
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
         self._draw_sound_callback = print
 
+    def set_draw_sound_callback(self, callback: Callable) -> None:
+        '''\
+        Read at the class docs about the displaying policy.
+        '''
+
+        self._draw_sound_callback = callback
+
     def add_sound(self, sound, draw_spec=None) -> None:
         '''\
         Append sound to the sample and
         use the '_draw_sound_callback'
         to display the new sound.
-
         This function probably will be reimplemented.
         '''
 
         self._add_sound(sound, draw_spec)
+
+    def set_bpm(self, bpm: int) -> None:
+        '''\
+        Read about bpm in __init__'s docs.
+        This function probably will be reimplemented.
+        '''
+
+        self._set_bpm()
+
+    def resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
+        '''\
+        Sample.resize, but using the time signature.
+        This function probably will be reimplemented.
+        '''
+
+        self._resize(time_sign, tact_n)
 
     def _add_sound(self, sound, draw_spec) -> None:
         '''\
@@ -151,27 +173,29 @@ class AbstractPlayer():
         self._sample.append(sound)
         self._draw_sound_callback(draw_spec)
 
-    def set_draw_sound_callback(self, callback: Callable) -> None:
+    def _set_bpm(self, bpm: int) -> None:
         '''\
-        Read at the class docs about the displaying policy.
-        '''
-
-        self._draw_sound_callback = callback
-
-    def set_bpm(self, bpm: int) -> None:
-        '''\
-        Read about bpm in __init__'s docs.
+        Minimal implementation that probably will be used
+        at 'set_bpm' future implementation.
         '''
 
         self.bpm = bpm
 
-    def resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
+    def _resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
         '''\
-        Facade for the sample.resize, but using the time signature.
+        Minimal implementation that probably will be used
+        at 'resize' future implementation.
         '''
 
         self.time_sign = time_sign
         self._sample.resize(tact_l=self.time_sign[0], tact_n=tact_n)
+
+    def _beat(self) -> Iterable:
+        '''\
+        Facade for the Sample.
+        '''
+
+        yield from self._sample.beat()
 
     def switch(self, sound_index: int, beat_index: int) -> None:
         '''\
