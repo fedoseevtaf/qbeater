@@ -1,11 +1,9 @@
 from time import perf_counter as get_now
-from typing import Callable
 
 from PyQt5.QtCore import QTimer, QUrl
 from PyQt5.QtMultimedia import QSoundEffect
 
-from qb_sample import AbstractPlayer, AbstractSoundManager, AbstractSound, AbstractLoader
-
+from qb_core import AbstractPlayer, AbstractSoundManager, AbstractSound, AbstractLoader
 
 
 class Sound(AbstractSound):
