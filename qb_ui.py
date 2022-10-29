@@ -13,7 +13,7 @@ class ColoredButton(QPushButton):
     def __init__(self, *args) -> None:
         super().__init__(*args)
         self.state = False
-        self.clicked.connect(self._change_color)
+        self.clicked.connect(self.change_color)
 
         self._default = 'background-color: #aab4ab'
         self._clicked = 'background-color: #fe7c00'
@@ -29,7 +29,7 @@ class ColoredButton(QPushButton):
         else:
             self.setStyleSheet(self._default)
 
-    def _change_color(self) -> None:
+    def change_color(self) -> None:
         self.state = not self.state
         self._set_color()
 
