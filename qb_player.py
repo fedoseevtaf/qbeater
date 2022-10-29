@@ -177,7 +177,7 @@ class Player(AbstractPlayer, AbstractSoundManager, loader=SoundLoader):
         Reuse inherited 'resize' and set a '_period'.
         '''
 
-        self._resize(time_sign)
+        self._resize(time_sign, tact_n)
         self._period = 60 / self.bpm / (self.time_sign[1] / 4)
 
     def set_volume(self, volume: float) -> None:

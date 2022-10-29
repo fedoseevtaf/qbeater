@@ -1,7 +1,9 @@
 from sys import argv
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout
+)
 
 import qb_player as qb
 import qb_ui as ui
@@ -115,6 +117,33 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.options.volume_value.valueChanged.connect(self._set_volume)
         self.options.bpm_value.valueChanged.connect(self._set_bpm)
         self.options.clear_btn.clicked.connect(self._clear)
+
+        self.options.conf_btn.clicked.connect(self._make_config_window)
+
+    def _make_config_window(self) -> None:
+        self.cf = ui.ConfigWindow()
+        self.player.turn_off()
+        self.cf.show()
+        self.cf.ok.clicked.connect(self._reconfig)
+
+    def _reconfig(self) -> None:
+        time_sign = (self.cf.metre.value(), int(self.cf.length.currentText()))
+        tact_n = self.cf.tacts.value()
+        self.player.resize(time_sign, tact_n)
+        self._redraw_lines()
+        self.cf.hide()
+        del self.cf
+
+    def _redraw_lines(self) -> None:
+        titles = list('' for _ in range(len(self._sound_lines_book)))
+        for i, line_id in enumerate(frozenset(self._sound_lines_book)):
+            sound_line = self._sound_lines_book[line_id]
+            line_index = self.layout.indexOf(sound_line)
+            titles[line_index + i - 1] = sound_line.header.label.text()
+            self._del_sound_line(line_id)
+
+        for title in titles:
+            self._add_sound_line(title, self.player.get_tact_l(), self.player.get_tact_n())
 
     def _clear(self) -> None:
         for sound_line in self._sound_lines_book.values():

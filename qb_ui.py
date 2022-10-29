@@ -3,16 +3,16 @@ from typing import Iterator
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
-    QWidget, QGridLayout,
+    QWidget, QGridLayout, QDialog,
     QPushButton, QLabel, QSpinBox, QSlider, QLineEdit, QComboBox
 )
 
 
-class ConfigWindow(QWidget):
+class ConfigWindow(QDialog):
 
     def __init__(self) -> None:
-        print(90)
         super().__init__()
+        self.setModal(True)
         self.setWindowTitle('config')
         self.setWindowIcon(QIcon('icons/icon.png'))
         self.setFixedSize(300, 60)
