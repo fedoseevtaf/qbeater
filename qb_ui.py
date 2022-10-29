@@ -4,8 +4,40 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QWidget, QGridLayout,
-    QPushButton, QLabel, QSpinBox, QSlider, QLineEdit
+    QPushButton, QLabel, QSpinBox, QSlider, QLineEdit, QComboBox
 )
+
+
+class ConfigWindow(QWidget):
+
+    def __init__(self) -> None:
+        print(90)
+        super().__init__()
+        self.setWindowTitle('config')
+        self.setWindowIcon(QIcon('icons/icon.png'))
+        self.setFixedSize(300, 60)
+
+        self._metre = QLabel(' Metre', self)
+        self._metre.setGeometry(0, 0, 100, 30)
+        self.metre = QSpinBox(self)
+        self.metre.setGeometry(100, 5, 50, 20)
+        self.metre.setRange(2, 7)
+
+        self._length = QLabel(' Length', self)
+        self._length.setGeometry(0, 30, 100, 30)
+        self.length = QComboBox(self)
+        for i in range(1, 6):
+            self.length.addItem(str(2 ** i))
+        self.length.setGeometry(100, 35, 50, 20)
+
+        self._tacts = QLabel(' Tacts', self)
+        self._tacts.setGeometry(150, 0, 100, 30)
+        self.tacts = QSpinBox(self)
+        self.tacts.setGeometry(250, 5, 50, 20)
+        self.tacts.setRange(2, 5)
+
+        self.ok = QPushButton('OK', self)
+        self.ok.setGeometry(250, 31, 50, 28)
 
 
 class ColoredButton(QPushButton):
