@@ -34,6 +34,11 @@ class Sample():
         self._sounds_len = len(sounds)
 
 
+    def view(self) -> Iterable[Iterable[int]]:
+        for map_line in self._mapping:
+            yield (_ for _ in map_line)
+
+
     def switch(self, sound_index: int, beat_index: int) -> None:
         '''\
         Turn on/off defined sound at defined beat.
@@ -176,6 +181,10 @@ class AbstractPlayer():
         self._sounds = list()
         self._sample: AbstractSample = Sample(self._sounds, tact_l=self.time_sign[0], tact_n=tact_n)
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
+
+
+    def view(self) -> Iterable[Iterable[int]]:
+        yield from self._sample.view()
 
     def set_bpm(self, bpm: int) -> None:
         '''\
