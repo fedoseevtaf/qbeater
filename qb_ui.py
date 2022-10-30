@@ -1,3 +1,8 @@
+'''\
+qb_ui provide ui templates.
+'''
+
+
 from typing import Iterator
 
 from PyQt5.QtCore import Qt
@@ -9,6 +14,9 @@ from PyQt5.QtWidgets import (
 
 
 class ConfigWindow(QDialog):
+    '''\
+    Used to set time signature and number of tacts.
+    '''
 
     def __init__(self) -> None:
         super().__init__()
@@ -41,6 +49,9 @@ class ConfigWindow(QDialog):
 
 
 class ColoredButton(QPushButton):
+    '''\
+    Implement color policy of the button.
+    '''
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
@@ -52,6 +63,10 @@ class ColoredButton(QPushButton):
         self._set_color()
 
     def reset(self) -> None:
+        '''\
+        Set to default color.
+        '''
+
         self.state = False
         self._set_color()
 
@@ -62,6 +77,10 @@ class ColoredButton(QPushButton):
             self.setStyleSheet(self._default)
 
     def change_color(self) -> None:
+        '''\
+        Switch button color, 'change_color' is used on click.
+        '''
+
         self.state = not self.state
         self._set_color()
 
@@ -76,6 +95,9 @@ class ColoredButton(QPushButton):
 
 
 class SoundHeader(QWidget):
+    '''\
+    Store sound title and remove button.
+    '''
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
@@ -88,10 +110,17 @@ class SoundHeader(QWidget):
         self.delbtn = self.btn
 
     def set_title(self, title: str) -> None:
+        '''\
+        Change title, to preset for example.
+        '''
+
         self.label.setText(title)
 
 
 class SoundLine(QWidget):
+    '''\
+    Use layout to display beat buttons.
+    '''
 
     def __init__(self, *args, tact_l: int, tact_n: int) -> None:
         super().__init__(*args)
@@ -115,20 +144,38 @@ class SoundLine(QWidget):
         return iter(self.btns)
 
     def clear(self) -> None:
+        '''\
+        'Off' all buttons.
+        '''
+
         for btn in self.btns:
             btn.reset()
 
     def set_title(self, title: str) -> None:
+        '''\
+        Facade of SoundHeader.
+        '''
         self.header.set_title(title)
 
     def getbtn(self, i: int) -> ColoredButton:
+        '''\
+        'getbtn' is used to bind click.
+        '''
+
         return self.btns[i]
 
     def findbtn(self, btn: QPushButton) -> int:
+        '''\
+        'getbtn' is used to bind click.
+        '''
+
         return self.layout.indexOf(btn)
 
 
 class OptionsLine(QWidget):
+    '''\
+    Store all control buttons and fields.
+    '''
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
