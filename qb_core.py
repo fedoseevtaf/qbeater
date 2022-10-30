@@ -12,7 +12,7 @@ class Sample():
     without any information about what sound is.
     '''
 
-    def __init__(self, sounds: list, *args,
+    def __init__(self, sounds: list, /,
                  tact_l: int = 3, tact_n: int = 4) -> None:
 
         '''\
@@ -27,7 +27,7 @@ class Sample():
         self.tact_n = tact_n
 
         self._sounds = sounds
-        self._mapping = list()
+        self._mapping = []
 
         self._actual_beat_num = 0
         self._sample_len = tact_l * tact_n
@@ -128,28 +128,20 @@ class AbstractSound():
         facade of 'sound_obj'.
         '''
 
-        pass
-
     def play(self) -> None:
         '''\
         Play using sound_obj.
         '''
-
-        pass
 
     def stop(self) -> None:
         '''\
         Stop playing of sound_obj.
         '''
 
-        pass
-
     def set_volume(self, volume: float) -> None:
         '''\
         Set the volume of sound object.
         '''
-
-        pass
 
     def source(self) -> str:
         '''\
@@ -182,8 +174,6 @@ class AbstractLoader():
         after the successful loading.
         '''
 
-        pass
-
     def set_installer(self, installer: Callable) -> None:
         '''\
         Set callback that will be used by player.
@@ -213,6 +203,14 @@ class AbstractSoundLoaderClient():
         cls.__loader = loader
         super().__init_subclass__(**kwargs)
 
+
+    def __init__(self) -> None:
+        '''\
+        Would be reimplemented.
+        '''
+
+        self._init_loader()
+
     def _init_loader(self) -> None:
         '''\
         Init loader for the instance.
@@ -241,8 +239,6 @@ class AbstractSoundLoaderClient():
         Should be implemented in a player to make adding of sounds.
         '''
 
-        pass
-
 
 class AbstractSampleClient():
     '''\
@@ -250,7 +246,15 @@ class AbstractSampleClient():
     make facade for it.
     '''
 
-    def _init_sample(self, *args, time_sign: tuple[int] = (4, 8),
+
+    def __init__(self) -> None:
+        '''\
+        Would be reimplemented.
+        '''
+
+        self._init_sample()
+
+    def _init_sample(self, /, time_sign: tuple[int] = (4, 8),
                      bpm: int = 90, tact_n: int = 3) -> None:
         '''\
         The 'time signature' is a musician term, read about it on wiki.
@@ -261,11 +265,11 @@ class AbstractSampleClient():
         self.time_sign = time_sign
         self.bpm = bpm
 
-        self._sounds = list()
-        self._sample: AbstractSample = Sample(self._sounds, tact_l=self.time_sign[0], tact_n=tact_n)
+        self._sounds = []
+        self._sample = Sample(self._sounds, tact_l=self.time_sign[0], tact_n=tact_n)
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
 
-    def set_bpm(self, bpm: int) -> None:
+    def set_bpm(self, bpm: int = 90) -> None:
         '''\
         Read about bpm in __init__'s docs.
         This function probably will be reimplemented.
