@@ -267,7 +267,7 @@ valid-metaclass-classmethod-first-arg=cls
 
 # List of regular expressions of class ancestor names to ignore when counting
 # public methods (see R0903)
-exclude-too-few-public-methods=no
+exclude-too-few-public-methods=
 
 # List of qualified class names to ignore when counting class parents (see
 # R0901)
@@ -293,6 +293,7 @@ max-parents=7
 
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=20
+min-public-methods=0
 
 # Maximum number of return / yield for function / method body.
 max-returns=6
@@ -434,11 +435,6 @@ timeout-methods=requests.api.delete,requests.api.get,requests.api.head,requests.
 
 
 [MISCELLANEOUS]
-
-# List of note tags to take in consideration, separated by a comma.
-#notes='FIXME',
-#      XXX,
-#      TODO
 
 # Regular expression of note tags to take in consideration.
 notes-rgx=
