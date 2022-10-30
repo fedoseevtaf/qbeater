@@ -262,7 +262,7 @@ class AbstractSampleClient():
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
         super().__init__()
 
-    def set_bpm(self, bpm: int = 90) -> None:
+    def set_bpm(self, bpm: int) -> None:
         '''\
         Read about bpm in __init__'s docs.
         This function probably will be reimplemented.
