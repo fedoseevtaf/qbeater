@@ -16,10 +16,10 @@ class Sample():
                  tact_l: int = 3, tact_n: int = 4) -> None:
 
         '''\
-        'tact_l' - length of tact
+        'tact_l' - length of tact (metre)
         'tact_n' - number of tacts in sample
 
-        'mapping' is used to remind what beat
+        '_mapping' is used to remind what beat
         what sound should be played.
         '''
 
@@ -35,6 +35,10 @@ class Sample():
 
 
     def view(self) -> Iterable[Iterable[int]]:
+        '''\
+        'view' maskes representation of the mapping.
+        '''
+
         for map_line in self._mapping:
             yield (_ for _ in map_line)
 
@@ -43,12 +47,13 @@ class Sample():
         '''\
         Turn on/off defined sound at defined beat.
         '''
+
         if 0 <= sound_index < self._sounds_len and 0 <= beat_index < self._sample_len:
             self._mapping[sound_index][beat_index] ^= 1
 
     def beat(self) -> Iterable:
         '''\
-        Yield all sounds that should be played
+        'beat' yields all sounds that should be played
         at that beat for playing them.
         '''
 
@@ -68,7 +73,7 @@ class Sample():
 
     def clear(self) -> None:
         '''\
-        Refill the mapping.
+        Fill the mapping to the empty state.
         '''
 
         self._mapping.clear()
@@ -77,7 +82,7 @@ class Sample():
     def resize(self, tact_l: int, tact_n: int) -> None:
         '''\
         Change:
-            <*> The time signature. But only meter, because
+            <*> The time signature. But only metre, because
                 sample don't save note length.
             <*> The 'track' size (amount of tacts in the sample)
 
@@ -112,30 +117,71 @@ class Sample():
 
 
 class AbstractSound():
+    '''\
+    Provide an abstraction to make Player independent
+    of sounds.
+    '''
 
     def __init__(self, sound_obj: object) -> None:
+        '''\
+        The AbstractSound (and sub-type) object is a
+        facade of 'sound_obj'.
+        '''
+
         pass
 
     def play(self) -> None:
+        '''\
+        Play using sound_obj.
+        '''
+
         pass
 
     def stop(self) -> None:
+        '''\
+        Stop playing of sound_obj.
+        '''
+
         pass
 
     def set_volume(self, volume: float) -> None:
+        '''\
+        Set the volume of sound object.
+        '''
+
         pass
 
     def source(self) -> str:
-        return 'None'
+        '''\
+        Return the source path of the sound_obj.
+        '''
+
+        return ''
 
 
 class AbstractLoader():
+    '''\
+    Provide an abstraction to make player
+    independent of sound loading process.
+
+    Implement callback setters.
+    '''
 
     def __init__(self) -> None:
+        '''\
+        '_install_sound' and '_draw_sound' is callbacks
+        to the player and ui.
+        '''
+
         self._install_sound = id
         self._draw_sound = print
 
     def load_sound(self, sound_path: str) -> None:
+        '''\
+        Method that load sound and use callbacks
+        after the successful loading.
+        '''
+
         pass
 
     def set_installer(self, installer: Callable) -> None:
