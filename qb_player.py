@@ -3,7 +3,7 @@ from time import perf_counter as get_now
 from PyQt5.QtCore import QTimer, QUrl
 from PyQt5.QtMultimedia import QSoundEffect
 
-from qb_core import AbstractPlayer, AbstractSoundManager, AbstractSound, AbstractLoader
+from qb_core import AbstractSampleClient, AbstractSoundLoaderClient, AbstractSound, AbstractLoader
 
 
 class Sound(AbstractSound):
@@ -115,7 +115,7 @@ class SoundLoader(AbstractLoader):
         del self._sounds_slots[id(sound)]
 
 
-class Player(AbstractPlayer, AbstractSoundManager, loader=SoundLoader):
+class Player(AbstractSampleClient, AbstractSoundLoaderClient, loader=SoundLoader):
 
     def __init__(self, *args, time_sign: tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
         self._init_sample(time_sign=time_sign, bpm=bpm, tact_n=tact_n)
