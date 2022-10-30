@@ -1,3 +1,9 @@
+'''\
+qb_player provides Player class that should be used
+as core implementation for ui.
+'''
+
+
 from time import perf_counter as get_now
 
 from PyQt5.QtCore import QTimer, QUrl
@@ -45,23 +51,14 @@ class SoundLoader(AbstractLoader):
     using lambda-slot, because there is no access to the 'sender' in this scope,
     and also stores that slot in '_sounds_slots' for disconnection in the future.
 
-    '_sound_is_loaded' checks that this sound is truly loaded (maybe with an error)
-    and calls '_install_sound'.
-
-    '_install_sound' calls the '_remove_out_queue' to sound,
-    and if the sound is ready to play (correct), sound will be added
-    by the inherited implementation of 'add_sound',
-    and also sets the volume of the sound.
+    '_sound_is_loaded' checks that this sound is truly loaded (maybe with an error),
+    calls the '_remove_out_queue' to sound, and if the sound is ready to play (correct),
+    sound will be added by the '_install_sound' callback and drawn by the '_draw_sound' callback.
+    (callbacks are inherited by the AbstractLoader)
 
     '_remove_out_queue' removes the sound out the '_sounds_queue',
     disconnects sound's status changing to the lambda-slot and removes it
     out the '_sounds_slots'.
-
-    Word about displaying policy:
-    The player has no tools for displaying the sound mapping
-    and providing ui. Therefor the player use
-    '_draw_sound_callback' to "notify" the ui that sound is
-    successfully added to the sample.
     '''
 
     def __init__(self) -> None:

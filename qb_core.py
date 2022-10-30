@@ -1,5 +1,5 @@
 '''\
-qb_sample provides tools for sounds's mapping.
+qb_core provides tools for sounds's mapping.
 '''
 
 
@@ -155,6 +155,12 @@ class AbstractLoader():
     '''\
     Provide an abstraction to make player
     independent of sound loading process.
+
+    Word about displaying policy:
+    The player has no tools for displaying the sound mapping
+    and providing ui. Therefor the player use
+    '_draw_sound' to "notify" the ui that sound is
+    successfully added.
 
     Implement callback setters.
     '''
