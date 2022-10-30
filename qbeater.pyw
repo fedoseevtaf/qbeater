@@ -124,7 +124,7 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.cf = ui.ConfigWindow()
         self.player.turn_off()
         self.cf.show()
-        self.cf.ok.clicked.connect(self._reconfig)
+        self.cf.ok_btn.clicked.connect(self._reconfig)
 
     def _reconfig(self) -> None:
         time_sign = (self.cf.metre.value(), int(self.cf.length.currentText()))

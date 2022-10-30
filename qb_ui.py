@@ -36,8 +36,8 @@ class ConfigWindow(QDialog):
         self.tacts.setGeometry(250, 5, 50, 20)
         self.tacts.setRange(2, 5)
 
-        self.ok = QPushButton('OK', self)
-        self.ok.setGeometry(250, 31, 50, 28)
+        self.ok_btn = QPushButton('OK', self)
+        self.ok_btn.setGeometry(250, 31, 50, 28)
 
 
 class ColoredButton(QPushButton):
@@ -102,7 +102,7 @@ class SoundLine(QWidget):
         self.layout.addWidget(self.header, 0, 0)
         self.layout.setColumnMinimumWidth(0, 200)
 
-        self.btns = list()
+        self.btns = []
         for i in range(tact_l * tact_n):
             btn = ColoredButton()
             if not i % tact_l:
