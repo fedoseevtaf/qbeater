@@ -7,8 +7,15 @@ from qb_core import AbstractSampleClient, AbstractSoundLoaderClient, AbstractSou
 
 
 class Sound(AbstractSound):
+    '''\
+    Implement AbstractSound using QSoundEffect
+    '''
 
     def __init__(self, sound_obj: QSoundEffect) -> None:
+        '''\
+        Store 'sound_obejct'.
+        '''
+
         self.sound_obj = sound_obj
 
     def play(self) -> None:
@@ -58,6 +65,7 @@ class SoundLoader(AbstractLoader):
     '''
 
     def __init__(self) -> None:
+        super().__init__()
         self._sounds_queue = dict()
         self._sounds_slots = dict()
 
@@ -93,7 +101,7 @@ class SoundLoader(AbstractLoader):
             self._draw_sound(sound)
 
     def _store_in_queue(self, sound: QSoundEffect) -> None:
-        '''\C:/users/user/desktop/1.wav
+        '''\
         Read a "Word about sound's adding policy" in the class docs.
         '_store_in_queue' stores the sound in the '_sounds_queue' to avoid deletion
         by the garbage collector, connects sound's status changing to the '_sound_is_loaded'
@@ -117,9 +125,8 @@ class SoundLoader(AbstractLoader):
 
 class Player(AbstractSampleClient, AbstractSoundLoaderClient, loader=SoundLoader):
 
-    def __init__(self, *args, time_sign: tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
-        self._init_sample(time_sign=time_sign, bpm=bpm, tact_n=tact_n)
-        self._init_loader()
+    def __init__(self, /, time_sign: tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
+        super().__init__(time_sign=time_sign, bpm=bpm, tact_n=tact_n)
 
         self._volume = 0
         self._is_turned_on = False
