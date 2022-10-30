@@ -63,8 +63,8 @@ class SoundLoader(AbstractLoader):
 
     def __init__(self) -> None:
         super().__init__()
-        self._sounds_queue = dict()
-        self._sounds_slots = dict()
+        self._sounds_queue = {}
+        self._sounds_slots = {}
 
     def load_sound(self, sound_path: str) -> None:
         '''\
@@ -121,6 +121,9 @@ class SoundLoader(AbstractLoader):
 
 
 class Player(AbstractSampleClient, AbstractSoundLoaderClient, loader=SoundLoader):
+    '''\
+    Implementation for ui.
+    '''
 
     def __init__(self, /, time_sign: tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
         super().__init__(time_sign=time_sign, bpm=bpm, tact_n=tact_n)
@@ -155,8 +158,7 @@ class Player(AbstractSampleClient, AbstractSoundLoaderClient, loader=SoundLoader
         '''
 
         time_to_next = self._period - (get_now() - beat_start)
-        if time_to_next < 0:
-            time_to_next = 0
+        time_to_next = max(time_to_next, 0)
         self._timer.start(int(time_to_next * 1000))
 
     def _play_beat(self) -> None:
@@ -189,9 +191,9 @@ class Player(AbstractSampleClient, AbstractSoundLoaderClient, loader=SoundLoader
         Update volume of all sounds.
         '''
 
-        self._volume = volume
         for sound in self._sounds:
             sound.set_volume(volume)
+        self._volume = volume
 
     def turn(self) -> None:
         '''\
