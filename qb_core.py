@@ -185,33 +185,70 @@ class AbstractLoader():
         pass
 
     def set_installer(self, installer: Callable) -> None:
+        '''\
+        Set callback that will be used by player.
+        '''
+
         self._install_sound = installer
 
     def set_drawer(self, drawer: Callable) -> None:
+        '''\
+        Set callback that will be used by ui.
+        '''
+
         self._draw_sound = drawer
 
 
-class AbstractSoundManager():
+class AbstractSoundLoaderClient():
+    '''\
+    Controller that install the loader to the player and
+    make facade for it.
+    '''
 
-    def __init_subclass__(cls, loader: type = AbstractLoader) -> None:
+    def __init_subclass__(cls, /, loader: type = AbstractLoader, **kwargs) -> None:
+        '''\
+        Store common implementation for instances of the 'cls'.
+        '''
+
         cls.__loader = loader
+        super().__init_subclass__(**kwargs)
 
     def _init_loader(self) -> None:
+        '''\
+        Init loader for the instance.
+        '''
+
         self._loader = type(self).__loader()
         self._loader.set_installer(self._install_sound)
         self._loader.set_drawer(print)
 
     def add_sound(self, sound_path: str) -> None:
+        '''\
+        Implement interface for a ui.
+        '''
+
         self._loader.load_sound(sound_path)
 
     def set_draw_sound_callback(self, callback: Callable) -> None:
+        '''\
+        Implement interface for a ui.
+        '''
+
         self._loader.set_drawer(callback)
 
     def _install_sound(self, sound: AbstractSound) -> None:
+        '''\
+        Should be implemented in a player to make adding of sounds.
+        '''
+
         pass
 
 
-class AbstractPlayer():
+class AbstractSampleClient():
+    '''\
+    Controller that install the sample to the player and
+    make facade for it.
+    '''
 
     def _init_sample(self, *args, time_sign: tuple[int] = (4, 8),
                      bpm: int = 90, tact_n: int = 3) -> None:
@@ -227,10 +264,6 @@ class AbstractPlayer():
         self._sounds = list()
         self._sample: AbstractSample = Sample(self._sounds, tact_l=self.time_sign[0], tact_n=tact_n)
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
-
-
-    def view(self) -> Iterable[Iterable[int]]:
-        yield from self._sample.view()
 
     def set_bpm(self, bpm: int) -> None:
         '''\
@@ -279,6 +312,13 @@ class AbstractPlayer():
         '''
 
         yield from self._sample.beat()
+
+    def view(self) -> Iterable[Iterable[int]]:
+        '''\
+        Facade for the Sample.
+        '''
+
+        yield from self._sample.view()
 
     def switch(self, sound_index: int, beat_index: int) -> None:
         '''\
