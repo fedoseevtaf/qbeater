@@ -200,25 +200,18 @@ class AbstractSoundLoaderClient():
         Store common implementation for instances of the 'cls'.
         '''
 
-        cls.__loader = loader
+        cls._loader = loader
         super().__init_subclass__(**kwargs)
 
 
     def __init__(self) -> None:
         '''\
-        Would be reimplemented.
-        '''
-
-        self._init_loader()
-
-    def _init_loader(self) -> None:
-        '''\
         Init loader for the instance.
         '''
 
-        self._loader = type(self).__loader()
+        self._loader = self._loader()
         self._loader.set_installer(self._install_sound)
-        self._loader.set_drawer(print)
+        super().__init__()
 
     def add_sound(self, sound_path: str) -> None:
         '''\
@@ -247,14 +240,7 @@ class AbstractSampleClient():
     '''
 
 
-    def __init__(self) -> None:
-        '''\
-        Would be reimplemented.
-        '''
-
-        self._init_sample()
-
-    def _init_sample(self, /, time_sign: tuple[int] = (4, 8),
+    def __init__(self, /, time_sign: tuple[int] = (4, 8),
                      bpm: int = 90, tact_n: int = 3) -> None:
         '''\
         The 'time signature' is a musician term, read about it on wiki.
@@ -268,6 +254,7 @@ class AbstractSampleClient():
         self._sounds = []
         self._sample = Sample(self._sounds, tact_l=self.time_sign[0], tact_n=tact_n)
         self._sample.clear()  # Super important line, clear fill the mapping of the sample
+        super().__init__()
 
     def set_bpm(self, bpm: int = 90) -> None:
         '''\
@@ -275,7 +262,7 @@ class AbstractSampleClient():
         This function probably will be reimplemented.
         '''
 
-        self._set_bpm()
+        self._set_bpm(bpm)
 
     def resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
         '''\
