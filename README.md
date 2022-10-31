@@ -2,25 +2,9 @@
 
 Drum machine with electronic sound.
 
-## Development
+## For user:
 
-### Tasks
-
-> - [X] ~~Create repository~~ 
-> - [X] ~~Make the SRS~~
-> - [X] ~~Create the core~~
-> - [X] ~~Create a minimal UI~~
-> - [X] ~~Create the full UI~~
-> - [X] ~~Make MVP~~
-> - [ ] Join UI and core
-> - [ ] Create an electronic sounds
-> - [ ] Pack the project with PyInstaller
-> - [ ] Make the users introduction quide
-
-### Dependencies
-
-- PyQt5
-- PyInstaller
+- [Download]()
 
 ## SRS
 
@@ -38,19 +22,48 @@ Prrogram with a drum-machine functionality
 - [About time sigmature](https://muz-teoretik.ru/muzykalnyj-razmer/)
 - [About tempo](https://muz-teoretik.ru/tempy-v-muzyke/)
 
-### Functions review
+### Features review
 
-- Program of the sound sequence
-- Inclusion of custom sounds
-- Exclusion of sounds
-- BPM dynamic control
-- Volume dynamic control
-- Time signature preset
-- Amount of tacts preset
+- [X] Program of the sound sequence
+- [X] Inclusion of custom sounds
+- [X] Exclusion of sounds
+- [X] BPM dynamic control
+- [X] Volume dynamic control
+- [X] Time signature preset
+- [X] Amount of tacts preset
+- [ ] Saving the project files
 
 ### System
 
 - OS: Windows 10 or later
+
+## Development
+
+### Tasks
+
+> - [X] ~~Create repository~~ 
+> - [X] ~~Make the SRS~~
+> - [X] ~~Create the core~~
+> - [X] ~~Create a minimal UI~~
+> - [X] ~~Create the full UI~~
+> - [X] ~~Make MVP~~
+> - [X] ~~Join UI and core~~
+> - [ ] Create an electronic sounds
+> - [ ] Pack the project with PyInstaller
+> - [ ] Make the users introduction quide
+
+### Architecture
+
+![Architecture scheme](stuff/arc_scheme.png)
+
+### Dependencies
+
+- PyQt5
+
+### Tools
+
+- PyInstaller
+- pylint
 
 ## Author
 

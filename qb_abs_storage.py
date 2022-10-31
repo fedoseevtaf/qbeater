@@ -1,2 +1,9 @@
+'''\
+'qb_abs_storage' provides abstractions to make saving projects.
+'''
+
+
 class AbstractStorage():
-    pass
+    '''\
+    Implement storage interface.
+    '''
