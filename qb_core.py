@@ -33,7 +33,6 @@ class Sample():
         self._sample_len = tact_l * tact_n
         self._sounds_len = len(sounds)
 
-
     def view(self) -> Iterable[Iterable[int]]:
         '''\
         'view' maskes representation of the mapping.
