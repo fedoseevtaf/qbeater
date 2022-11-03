@@ -110,6 +110,7 @@ class DrumMachine(DrumMachine_WindowComposer):
 
         self.options.add_sound.clicked.connect(self._add_sound_clicked)
         self.player.set_draw_sound_callback(self._display_new_sound)
+        self.player.set_redraw_mapping_callback(self._redraw_mapping)
 
         self.options.play_btn.clicked.connect(self._play_clicked)
         self.options.stop_btn.clicked.connect(self._stop_clicked)
@@ -119,6 +120,25 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.options.clear_btn.clicked.connect(self._clear)
 
         self.options.conf_btn.clicked.connect(self._make_config_window)
+        
+        self.options.pjload.clicked.connect(self._pjload_clicked)
+        self.options.pjstore.clicked.connect(self._pjstore_clicked)
+
+    def _redraw_mapping(self) -> None:
+        for mapping_line, sound_line in zip(self.player.view(),
+                                            self._sound_lines_book.values()):
+            for flag, btn in zip(mapping_line, sound_line):
+                btn.reset()
+                if flag:
+                    btn.change_color()
+        
+    def _pjload_clicked(self):
+        pjpath = self.options.pjload_path.text()
+        self.player.load_pj(pjpath)
+        
+    def _pjstore_clicked(self):
+        pjpath = self.options.pjstore_path.text()
+        self.player.store_pj(pjpath)
 
     def _make_config_window(self) -> None:
         self.cf = ui.ConfigWindow()
@@ -134,14 +154,17 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.cf.hide()
         del self.cf
 
-    def _redraw_lines(self) -> None:
+    def _clear_field(self) -> None:
         titles = list('' for _ in range(len(self._sound_lines_book)))
         for i, line_id in enumerate(frozenset(self._sound_lines_book)):
             sound_line = self._sound_lines_book[line_id]
             line_index = self.layout.indexOf(sound_line)
             titles[line_index + i - 1] = sound_line.header.label.text()
             self._del_sound_line(line_id)
+        return titles
 
+    def _redraw_lines(self) -> None:
+        titles = self._clear_field()
         for title in titles:
             self._add_sound_line(title, self.player.get_tact_l(), self.player.get_tact_n())
 
@@ -168,9 +191,6 @@ class DrumMachine(DrumMachine_WindowComposer):
 
     def _add_sound_clicked(self):
         sound_path = self.options.sound_path.text()
-        self._add_sound(sound_path)
-
-    def _add_sound(self, sound_path: str) -> None:
         self.player.add_sound(sound_path)
 
     def _display_new_sound(self, sound) -> None:

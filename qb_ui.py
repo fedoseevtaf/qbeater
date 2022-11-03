@@ -210,10 +210,20 @@ class OptionsLine(QWidget):
 
         self._volume_label = QLabel('Volume:', self)
         self._volume_label.setAlignment(Qt.AlignHCenter)
-        self._volume_label.setGeometry(280, 0, 100, 20)
+        self._volume_label.setGeometry(480, 0, 100, 20)
 
         self.volume_value = QSlider(self)
         self.volume_value.setOrientation(Qt.Horizontal)
         self.volume_value.setRange(0, 100)
         self.volume_value.setValue(50)
-        self.volume_value.setGeometry(280, 20, 100, 20)
+        self.volume_value.setGeometry(480, 20, 100, 20)
+
+        self.pjload_path = QLineEdit(self)
+        self.pjload_path.setGeometry(280, 20, 100, 20)
+        self.pjload = QPushButton('Load project', self)
+        self.pjload.setGeometry(280, 0, 100, 20)
+
+        self.pjstore_path = QLineEdit(self)
+        self.pjstore_path.setGeometry(380, 20, 100, 20)
+        self.pjstore = QPushButton('Store project', self)
+        self.pjstore.setGeometry(380, 0, 100, 20)

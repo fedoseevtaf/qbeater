@@ -5,40 +5,100 @@
 
 from typing import Callable
 
-from qb_core import Sample, AbstractSound
+from qb_core import Sample
+
+
+class AbstractSound():
+    '''\
+    Provide an abstraction to make Player independent
+    of sounds.
+    '''
+
+    def __init__(self, sound_obj: object) -> None:
+        '''\
+        The AbstractSound (and sub-type) object is a
+        facade of 'sound_obj'.
+        '''
+
+    def play(self) -> None:
+        '''\
+        Play using sound_obj.
+        '''
+
+    def stop(self) -> None:
+        '''\
+        Stop playing of sound_obj.
+        '''
+
+    def set_volume(self, volume: float) -> None:
+        '''\
+        Set the volume of sound object.
+        '''
+
+    def source(self) -> str:
+        '''\
+        Return the source path of the sound_obj.
+        '''
+
+        return ''
 
 
 class AbstractStorage():
     '''\
     Implement storage interface.
+    Provide an abstraction to make player
+    independent of sound loading process.
+
+    Word about displaying policy:
+    The player has no tools for displaying the sound mapping
+    and providing ui. Therefor the player use
+    '_draw_sound' to "notify" the ui that sound is
+    successfully added.
+
+    Implement callback setters.
     '''
 
     def __init__(self) -> None:
-        self._add_sound_callback = print
-        self._switch_callback = print
+        self._install_sound = print
+        self._draw_sound = print
+        self._update_view = print
 
-    def set_add_sound_callback(self, func: Callable) -> None:
+    def set_install_sound_callback(self, callback: Callable) -> None:
         '''\
-        Set basic callback.
+        '_install_sound' is used to add and config sound.
         '''
 
-        self._add_sound_callback = func
+        self._install_sound = callback
 
-    def set_switch_callback(self, func: Callable) -> None:
+    def set_draw_sound_callback(self, callback: Callable) -> None:
         '''\
-        Set basic callback.
+        '_draw_sound' is used to display a sound representation.
         '''
 
-        self._switch_callback = func
+        self._draw_sound = callback
 
-    def upload(self, path: str) -> None:
+    def set_update_view_callback(self, callback: Callable) -> None:
         '''\
-        Load project from the 'path'.
+        '_update_view' is used to display an actual sound mapping.
         '''
 
-    def unload(self, path: str, view: Sample, sounds: list[AbstractSound]) -> None:
+        self._update_view = callback
+
+
+    def upload_project(self, pjpath: str) -> None:
         '''\
-        Save project to the 'path'.
+        Load project from the 'pjpath'.
+        '''
+
+    def unload_project(self, pjpath: str, sample: Sample, sounds: list[AbstractSound]) -> None:
+        '''\
+        Save project to the 'pjpath'.
+        '''
+
+    def load_sound(self, sound_path: str) -> None:
+        '''\
+        Method that load sound and use callbacks
+        after the successful loading.
         '''
 
 
@@ -47,33 +107,46 @@ class AbstractStorageClient():
     Implement storage interface in player.
     '''
 
-    def __init_subclass__(cls, storage: type = AbstractStorage) -> None:
+    def __init_subclass__(cls, storage: type = AbstractStorage, **kwargs) -> None:
         cls._storage = storage
-        super().__init_subclass__()
+        super().__init_subclass__(**kwargs)
 
     def __init__(self) -> None:
         self._storage = self._storage()
-        self._storage.set_add_sound_callback(self.add_sound)
-        self._storage.set_switch_callback(self._switch_interface_for_storage)
+        self._storage.set_install_sound_callback(self._install_sound)
         super().__init__()
 
-    def _switch_interface_for_storage(self, beat_index: int) -> None:
+    def add_sound(self, sound_path: str) -> None:
         '''\
-        Make switch for storage independent by sound.
+        Facade for the 'AbstractStorage.unload_project'.
         '''
 
-        self.switch(0, beat_index)
+        self._storage.load_sound(sound_path)
+
+    def set_redraw_mapping_callback(self, callback: Callable) -> None:
+        '''\
+        Read about it in docs of AbstractStorage.
+        '''
+
+        self._storage.set_update_view_callback(callback)
+
+    def set_draw_sound_callback(self, callback: Callable) -> None:
+        '''\
+        Read about it in docs of AbstractStorage.
+        '''
+
+        self._storage.set_draw_sound_callback(callback)
 
     def load_pj(self, path: str) -> None:
         '''\
-        Facade for the 'AbstractStorage.unload'.
+        Facade for the 'AbstractStorage.unload_project'.
         '''
 
-        self._storage.upload(path)
+        self._storage.upload_project(path)
 
     def store_pj(self, path: str) -> None:
         '''\
-        Facade for the 'AbstractStorage.upload'.
+        Facade for the 'AbstractStorage.upload_project'.
         '''
 
-        self._storage.unload(path, self._sample, self._sounds)
+        self._storage.unload_project(path, self._sample, self._sounds)

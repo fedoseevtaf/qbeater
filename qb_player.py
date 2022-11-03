@@ -5,122 +5,16 @@ as core implementation for ui.
 
 
 from time import perf_counter as get_now
+from typing import Iterable
 
-from PyQt5.QtCore import QTimer, QUrl
-from PyQt5.QtMultimedia import QSoundEffect
+from PyQt5.QtCore import QTimer
 
-from qb_core import AbstractSampleClient, AbstractSoundLoaderClient, AbstractSound, AbstractLoader
-
-
-class Sound(AbstractSound):
-    '''\
-    Implement AbstractSound using QSoundEffect
-    '''
-
-    def __init__(self, sound_obj: QSoundEffect) -> None:
-        '''\
-        Store 'sound_obejct'.
-        '''
-
-        self.sound_obj = sound_obj
-
-    def play(self) -> None:
-        self.sound_obj.play()
-
-    def stop(self) -> None:
-        self.sound_obj.stop()
-
-    def set_volume(self, volume: float) -> None:
-        self.sound_obj.setVolume(volume)
-
-    def source(self) -> str:
-        return self.sound_obj.source().path()
+from qb_abs_storage import AbstractStorageClient, AbstractSound
+from qb_core import AbstractSampleClient
+from qb_storage import Storage
 
 
-class SoundLoader(AbstractLoader):
-    '''\
-    Word about sound's adding policy:
-    QSoundEffect load data asynchronously and don't raise the Exceptions.
-    Therefore, there is such a complex way to add new sounds.
-
-    Player uses '_load_sound' method to make the sound, sets the source of it,
-    and call the '_store_in_queue' to sound.
-
-    '_store_in_queue' stores the sound in the '_sounds_queue' to avoid deletion
-    by the garbage collector, connects sound's status changing to the '_sound_is_loaded'
-    using lambda-slot, because there is no access to the 'sender' in this scope,
-    and also stores that slot in '_sounds_slots' for disconnection in the future.
-
-    '_sound_is_loaded' checks that this sound is truly loaded (maybe with an error),
-    calls the '_remove_out_queue' to sound, and if the sound is ready to play (correct),
-    sound will be added by the '_install_sound' callback and drawn by the '_draw_sound' callback.
-    (callbacks are inherited by the AbstractLoader)
-
-    '_remove_out_queue' removes the sound out the '_sounds_queue',
-    disconnects sound's status changing to the lambda-slot and removes it
-    out the '_sounds_slots'.
-    '''
-
-    def __init__(self) -> None:
-        super().__init__()
-        self._sounds_queue = {}
-        self._sounds_slots = {}
-
-    def load_sound(self, sound_path: str) -> None:
-        '''\
-        Read a "Word about sound's adding policy" in the class docs.
-        '''
-
-        if sound_path == '':
-            return
-        self._load_sound(sound_path)
-
-    def _load_sound(self, sound_path: str) -> None:
-        '''\
-        Read a "Word about sound's adding policy" in the class docs.
-        '''
-
-        sound = QSoundEffect()
-        self._store_in_queue(sound)
-        sound.setSource(QUrl.fromLocalFile(sound_path))
-
-    def _sound_is_loaded(self, sound: QSoundEffect) -> None:
-        '''\
-        Read a "Word about sound's adding policy" in the class docs.
-        '''
-
-        if sound.status() > 1: #  Sound is loaded
-            self._remove_out_queue(sound)
-
-        if sound.status() == 2: #  Sound is corect
-            sound = Sound(sound)
-            self._install_sound(sound)
-            self._draw_sound(sound)
-
-    def _store_in_queue(self, sound: QSoundEffect) -> None:
-        '''\
-        Read a "Word about sound's adding policy" in the class docs.
-        '_store_in_queue' stores the sound in the '_sounds_queue' to avoid deletion
-        by the garbage collector, connects sound's status changing to the '_sound_is_loaded'
-        using lambda-slot, because there is no access to the 'sender' in this scope,
-        and also stores that slot in '_sounds_slots' for disconnection in the future.
-        '''
-
-        self._sounds_queue[id(sound)] = sound
-        self._sounds_slots[id(sound)] = lambda sound=sound: self._sound_is_loaded(sound)
-        sound.statusChanged.connect(self._sounds_slots[id(sound)])
-
-    def _remove_out_queue(self, sound: QSoundEffect) -> None:
-        '''\
-        Read a "Word about sound's adding policy" in the class docs.
-        '''
-
-        del self._sounds_queue[id(sound)]
-        sound.statusChanged.disconnect(self._sounds_slots[id(sound)])
-        del self._sounds_slots[id(sound)]
-
-
-class Player(AbstractSampleClient, AbstractSoundLoaderClient, loader=SoundLoader):
+class Player(AbstractSampleClient, AbstractStorageClient, storage=Storage):
     '''\
     Implementation for ui.
     '''
@@ -135,8 +29,8 @@ class Player(AbstractSampleClient, AbstractSoundLoaderClient, loader=SoundLoader
         self._timer = QTimer()
         self._timer.timeout.connect(self.play)
 
-    def _install_sound(self, sound: AbstractSound) -> None:
-        self._add_sound(sound)
+    def _install_sound(self, sound: AbstractSound, mapping: Iterable[int] = b'') -> None:
+        self._add_sound(sound, mapping)
         sound.set_volume(self._volume)
 
     def play(self) -> None:
