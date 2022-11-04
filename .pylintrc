@@ -419,6 +419,8 @@ disable=raw-checker-failed,
         import-error,
         inconsistent-return-statements,
         too-few-public-methods,
+        consider-using-with,
+        bare-except,
 
 
 # Enable the message, report, category or checker with the given id(s). You can
