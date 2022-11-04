@@ -3,7 +3,7 @@ qb_storage implement qb_abs_storage stuff.
 '''
 
 from os import path as ospath
-from typing import Iterable
+from typing import Iterable, TextIO
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtMultimedia import QSoundEffect
@@ -69,21 +69,22 @@ class Storage(AbstractStorage):
         self._sounds_slots = {}
         self._mappings = {}
 
-    def load_sound(self, sound_path: str) -> None:
+    def load_sound(self, sound_path: str, mapping: Iterable[int]) -> None:
         '''\
         Read a "Word about sound's adding policy" in the class docs.
         '''
 
         if sound_path == '':
             return
-        self._load_sound(sound_path)
+        self._load_sound(sound_path, mapping)
 
-    def _load_sound(self, sound_path: str) -> None:
+    def _load_sound(self, sound_path: str, mapping: Iterable[int]) -> None:
         '''\
         Read a "Word about sound's adding policy" in the class docs.
         '''
 
         sound = QSoundEffect()
+        self._mappings[id(sound)] = mapping
         self._store_in_queue(sound)
         sound.setSource(QUrl.fromLocalFile(sound_path))
 
@@ -92,11 +93,23 @@ class Storage(AbstractStorage):
         Read a "Word about sound's adding policy" in the class docs.
         '''
 
-        if sound.status() > 1: #  Sound is loaded
-            self._remove_out_queue(sound)
-
+        if sound.status() < 2: #  Sound is not loaded
+            return
+        self._remove_out_queue(sound)
+        mapping = self._mappings.pop(id(sound))
         if sound.status() == 2: #  Sound is corect
-            self._add_sound(sound)
+            return self._apply_callbacks(sound, mapping)
+        self._display_notification(f'Error of loading the sound ({sound.source().path()})!')
+
+    def _apply_callbacks(self, sound: QSoundEffect, mapping: Iterable[int]) -> None:
+        '''\
+        Read about callbacks in docs of the AbstractStorage.
+        '''
+
+        sound = Sound(sound)
+        self._install_sound(sound, mapping)
+        self._draw_sound(sound)
+        self._update_view()
 
     def _store_in_queue(self, sound: QSoundEffect) -> None:
         '''\
@@ -120,20 +133,6 @@ class Storage(AbstractStorage):
         sound.statusChanged.disconnect(self._sounds_slots[id(sound)])
         del self._sounds_slots[id(sound)]
 
-    def _add_sound(self, sound: QSoundEffect) -> None:
-        sound_id = id(sound)
-        sound = Sound(sound)
-        self._preset_sound(sound, sound_id)
-        self._draw_sound(sound)
-        self._update_view()
-
-    def _preset_sound(self, sound: AbstractSound, mapping_id: int) -> None:
-        try:
-            self._install_sound(sound, self._mappings[mapping_id])
-            del self._mappings[mapping_id]
-        except KeyError:
-            self._install_sound(sound)
-
     def upload_project(self, pjpath: str) -> None:
         '''\
         Load project from the 'path'.
@@ -143,10 +142,7 @@ class Storage(AbstractStorage):
         if paths is None:
             return
         for sound_path, mapping_line in zip(paths, mapping):
-            sound = QSoundEffect()
-            self._mappings[id(sound)] = mapping_line
-            self._store_in_queue(sound)
-            sound.setSource(QUrl.fromLocalFile(sound_path))
+            self.load_sound(sound_path, mapping_line)
 
     def _upload_data(self, pjpath: str) -> tuple[Iterable | None]:
         '''\
@@ -154,27 +150,44 @@ class Storage(AbstractStorage):
         '''
 
         try:
-            file = open(pjpath)
-            lines = file.readlines()
-            paths = tuple(lines[i][:-1] for i in range(0, len(lines), 2))
-            view = []
-            for i in range(1, len(lines), 2):
-                line = lines[i]
-                view.append(bytes(int(char) for char in line[:-1]))
-            file.close()
+            paths, mapping = self.__extract_file(pjpath)
         except:
+            self._display_notification(f'Error of loading the project ({pjpath})!')
             return None, None
-        return paths, view
+        return paths, mapping
 
-    def unload_project(self, pjpath: str, view: Sample, sounds: list[AbstractSound]) -> None:
+    def __extract_file(self, pjpath: str) -> Iterable[Iterable[str] | Iterable[Iterable[int]]]:
+        file = open(pjpath)
+        lines = file.readlines()
+        yield self.__extract_paths(lines)
+        yield self.__extract_mapping(lines)
+        file.close()
+
+    def __extract_paths(self, lines: list[str]) -> Iterable[str]:
+        for i in range(0, len(lines), 2):
+            yield lines[i].strip('\n')
+
+    def __extract_mapping(self, lines: list[str]) -> Iterable[Iterable[int]]:
+        for i in range(1, len(lines), 2):
+            line = lines[i].strip('\n')
+            yield bytes(int(char) for char in line)
+
+    def unload_project(self, pjpath: str, sample: Sample, sounds: list[AbstractSound]) -> None:
         '''\
         Save project to the 'path'.
         '''
 
-        with open(pjpath, 'w') as file:
-            for sound, view_line in zip(sounds, view.view()):
-                file.write(ospath.abspath(sound.source()))
-                file.write('\n')
-                for flag in view_line:
-                    file.write(str(int(flag)))
-                file.write('\n')
+        try:
+            file = open(pjpath, 'w')
+            self.__write_data(file, sample, sounds)
+            file.close()
+        except:
+            return self._display_notification(f'Error of saving the project ({pjpath})!')
+        return
+
+    def __write_data(self, file: TextIO, sample: Sample, sounds: list[AbstractSound]) -> None:
+        for sound, mapping in zip(sounds, sample.view()):
+            file.write(ospath.abspath(sound.source()))
+            file.write('\n')
+            file.write(''.join(map(str, mapping)))
+            file.write('\n')

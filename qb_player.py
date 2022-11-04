@@ -29,7 +29,7 @@ class Player(AbstractSampleClient, AbstractStorageClient, storage=Storage):
         self._timer = QTimer()
         self._timer.timeout.connect(self.play)
 
-    def _install_sound(self, sound: AbstractSound, mapping: Iterable[int] = b'') -> None:
+    def _install_sound(self, sound: AbstractSound, mapping: Iterable[int]) -> None:
         self._add_sound(sound, mapping)
         sound.set_volume(self._volume)
 

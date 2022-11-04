@@ -48,9 +48,8 @@ Prrogram with a drum-machine functionality
 > - [X] ~~Create the full UI~~
 > - [X] ~~Make MVP~~
 > - [X] ~~Join UI and core~~
-> - [ ] Create an electronic sounds
 > - [ ] Pack the project with PyInstaller
-> - [ ] Make the users introduction quide
+> - [ ] Make the ''
 
 ### Architecture
 

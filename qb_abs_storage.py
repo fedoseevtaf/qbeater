@@ -63,6 +63,15 @@ class AbstractStorage():
         self._draw_sound = print
         self._update_view = print
 
+        self._display_notification = print
+
+    def set_notification_callback(self, callback: Callable) -> None:
+        '''\
+        '_display_notification' is used to notify user about errors.
+        '''
+
+        self._display_notification = callback
+
     def set_install_sound_callback(self, callback: Callable) -> None:
         '''\
         '_install_sound' is used to add and config sound.
@@ -83,7 +92,6 @@ class AbstractStorage():
         '''
 
         self._update_view = callback
-
 
     def upload_project(self, pjpath: str) -> None:
         '''\
@@ -121,7 +129,14 @@ class AbstractStorageClient():
         Facade for the 'AbstractStorage.unload_project'.
         '''
 
-        self._storage.load_sound(sound_path)
+        self._storage.load_sound(sound_path, b'')
+
+    def set_notification_callback(self, callback: Callable) -> None:
+        '''\
+        Read about it in docs of AbstractStorage.
+        '''
+
+        self._storage.set_notification_callback(callback)
 
     def set_redraw_mapping_callback(self, callback: Callable) -> None:
         '''\

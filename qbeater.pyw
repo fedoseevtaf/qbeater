@@ -111,6 +111,7 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.options.add_sound.clicked.connect(self._add_sound_clicked)
         self.player.set_draw_sound_callback(self._display_new_sound)
         self.player.set_redraw_mapping_callback(self._redraw_mapping)
+        self.player.set_notification_callback(self.options.notification_line.setText)
 
         self.options.play_btn.clicked.connect(self._play_clicked)
         self.options.stop_btn.clicked.connect(self._stop_clicked)
@@ -205,7 +206,7 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.player.switch(sound_line_index, sound_btn_index)
 
     def _load_basic_sounds(self) -> None:
-        pass
+        self.player.load_pj('basic.qbp')
 
 
 if __name__ == '__main__':

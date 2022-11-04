@@ -179,7 +179,7 @@ class OptionsLine(QWidget):
 
     def __init__(self, *args) -> None:
         super().__init__(*args)
-        self.setMinimumSize(380, 40)
+        self.setMinimumSize(380, 70)
 
         self.play_btn = QPushButton(self)
         self.play_btn.setGeometry(0, 0, 40, 40)
@@ -227,3 +227,7 @@ class OptionsLine(QWidget):
         self.pjstore_path.setGeometry(380, 20, 100, 20)
         self.pjstore = QPushButton('Store project', self)
         self.pjstore.setGeometry(380, 0, 100, 20)
+
+        self.notification_line = QLabel('Welcome, thank you for using our software!', self)
+        self.notification_line.setAlignment(Qt.AlignHCenter)
+        self.notification_line.setGeometry(0, 50, 580, 20)

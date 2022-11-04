@@ -3,7 +3,7 @@ qb_core provides tools for sounds's mapping.
 '''
 
 
-from typing import Callable, Iterable
+from typing import Iterable
 
 
 class Sample():
@@ -95,7 +95,7 @@ class Sample():
         self._sample_len = tact_l * tact_n
         self.clear()
 
-    def append(self, sound: object, mapping: Iterable[int] = b'') -> None:
+    def append(self, sound: object, mapping: Iterable[int]) -> None:
         '''\
         Add new sound and make mapping for it.
         '''
@@ -155,7 +155,7 @@ class AbstractSampleClient():
 
         self._resize(time_sign, tact_n)
 
-    def _add_sound(self, sound: object, mapping: Iterable[int] = b'') -> None:
+    def _add_sound(self, sound: object, mapping: Iterable[int]) -> None:
         '''\
         Minimal implementation that probably will be used
         at 'add_widget' future implementation.
