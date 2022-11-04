@@ -135,7 +135,6 @@ class DrumMachine(DrumMachineWindowComposer):
         self.options.clear_btn.clicked.connect(self._clear)
 
         self.options.conf_btn.clicked.connect(self._make_config_window)
-        
         self.options.pjload.clicked.connect(self._pjload_clicked)
         self.options.pjstore.clicked.connect(self._pjstore_clicked)
 
@@ -146,11 +145,11 @@ class DrumMachine(DrumMachineWindowComposer):
                 btn.reset()
                 if flag:
                     btn.change_color()
-        
+
     def _pjload_clicked(self) -> None:
         pjpath = self.options.pjload_path.text()
         self.player.load_pj(pjpath)
-        
+
     def _pjstore_clicked(self) -> None:
         pjpath = self.options.pjstore_path.text()
         self.player.store_pj(pjpath)
