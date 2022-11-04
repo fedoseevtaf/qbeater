@@ -3,7 +3,7 @@ qb_core provides tools for sounds's mapping.
 '''
 
 
-from typing import Callable, Iterable
+from typing import Iterable
 
 
 class Sample():
@@ -12,8 +12,7 @@ class Sample():
     without any information about what sound is.
     '''
 
-    def __init__(self, sounds: list, /,
-                 tact_l: int = 3, tact_n: int = 4) -> None:
+    def __init__(self, sounds: list, /, tact_l: int = 3, tact_n: int = 4) -> None:
 
         '''\
         'tact_l' - length of tact (metre)
@@ -27,12 +26,11 @@ class Sample():
         self.tact_n = tact_n
 
         self._sounds = sounds
-        self._mapping = []
+        self._mapping: list[bytearray] = []
 
         self._actual_beat_num = 0
         self._sample_len = tact_l * tact_n
         self._sounds_len = len(sounds)
-
 
     def view(self) -> Iterable[Iterable[int]]:
         '''\
@@ -40,7 +38,7 @@ class Sample():
         '''
 
         for map_line in self._mapping:
-            yield (_ for _ in map_line)
+            yield bytes(map_line)
 
 
     def switch(self, sound_index: int, beat_index: int) -> None:
@@ -96,13 +94,15 @@ class Sample():
         self._sample_len = tact_l * tact_n
         self.clear()
 
-    def append(self, sound: object) -> None:
+    def append(self, sound: object, mapping: Iterable[int]) -> None:
         '''\
         Add new sound and make mapping for it.
         '''
 
         self._sounds.append(sound)
         self._mapping.append(bytearray(self._sample_len))
+        for i, (flag, _) in enumerate(zip(mapping, self._mapping[-1])):
+            self._mapping[-1][i] = flag
         self._sounds_len += 1
 
     def remove(self, sound_index: int) -> None:
@@ -116,138 +116,14 @@ class Sample():
             self._sounds_len -= 1
 
 
-class AbstractSound():
-    '''\
-    Provide an abstraction to make Player independent
-    of sounds.
-    '''
-
-    def __init__(self, sound_obj: object) -> None:
-        '''\
-        The AbstractSound (and sub-type) object is a
-        facade of 'sound_obj'.
-        '''
-
-    def play(self) -> None:
-        '''\
-        Play using sound_obj.
-        '''
-
-    def stop(self) -> None:
-        '''\
-        Stop playing of sound_obj.
-        '''
-
-    def set_volume(self, volume: float) -> None:
-        '''\
-        Set the volume of sound object.
-        '''
-
-    def source(self) -> str:
-        '''\
-        Return the source path of the sound_obj.
-        '''
-
-        return ''
-
-
-class AbstractLoader():
-    '''\
-    Provide an abstraction to make player
-    independent of sound loading process.
-
-    Word about displaying policy:
-    The player has no tools for displaying the sound mapping
-    and providing ui. Therefor the player use
-    '_draw_sound' to "notify" the ui that sound is
-    successfully added.
-
-    Implement callback setters.
-    '''
-
-    def __init__(self) -> None:
-        '''\
-        '_install_sound' and '_draw_sound' is callbacks
-        to the player and ui.
-        '''
-
-        self._install_sound = id
-        self._draw_sound = print
-
-    def load_sound(self, sound_path: str) -> None:
-        '''\
-        Method that load sound and use callbacks
-        after the successful loading.
-        '''
-
-    def set_installer(self, installer: Callable) -> None:
-        '''\
-        Set callback that will be used by player.
-        '''
-
-        self._install_sound = installer
-
-    def set_drawer(self, drawer: Callable) -> None:
-        '''\
-        Set callback that will be used by ui.
-        '''
-
-        self._draw_sound = drawer
-
-
-class AbstractSoundLoaderClient():
-    '''\
-    Controller that install the loader to the player and
-    make facade for it.
-    '''
-
-    def __init_subclass__(cls, /, loader: type = AbstractLoader, **kwargs) -> None:
-        '''\
-        Store common implementation for instances of the 'cls'.
-        '''
-
-        cls._loader = loader
-        super().__init_subclass__(**kwargs)
-
-
-    def __init__(self) -> None:
-        '''\
-        Init loader for the instance.
-        '''
-
-        self._loader = self._loader()
-        self._loader.set_installer(self._install_sound)
-        super().__init__()
-
-    def add_sound(self, sound_path: str) -> None:
-        '''\
-        Implement interface for a ui.
-        '''
-
-        self._loader.load_sound(sound_path)
-
-    def set_draw_sound_callback(self, callback: Callable) -> None:
-        '''\
-        Implement interface for a ui.
-        '''
-
-        self._loader.set_drawer(callback)
-
-    def _install_sound(self, sound: AbstractSound) -> None:
-        '''\
-        Should be implemented in a player to make adding of sounds.
-        '''
-
-
 class AbstractSampleClient():
     '''\
     Controller that install the sample to the player and
     make facade for it.
     '''
 
-
     def __init__(self, /, time_sign: tuple[int] = (4, 8),
-                     bpm: int = 90, tact_n: int = 3) -> None:
+                     bpm: int = 90, tact_n: int = 3,) -> None:
         '''\
         The 'time signature' is a musician term, read about it on wiki.
         https://en.wikipedia.org/wiki/Time_signature
@@ -278,13 +154,13 @@ class AbstractSampleClient():
 
         self._resize(time_sign, tact_n)
 
-    def _add_sound(self, sound) -> None:
+    def _add_sound(self, sound: object, mapping: Iterable[int]) -> None:
         '''\
         Minimal implementation that probably will be used
         at 'add_widget' future implementation.
         '''
 
-        self._sample.append(sound)
+        self._sample.append(sound, mapping)
 
     def _set_bpm(self, bpm: int) -> None:
         '''\
