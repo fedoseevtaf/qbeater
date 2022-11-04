@@ -12,8 +12,7 @@ class Sample():
     without any information about what sound is.
     '''
 
-    def __init__(self, sounds: list, /,
-                 tact_l: int = 3, tact_n: int = 4) -> None:
+    def __init__(self, sounds: list, /, tact_l: int = 3, tact_n: int = 4) -> None:
 
         '''\
         'tact_l' - length of tact (metre)
@@ -27,7 +26,7 @@ class Sample():
         self.tact_n = tact_n
 
         self._sounds = sounds
-        self._mapping = []
+        self._mapping: list[bytearray] = []
 
         self._actual_beat_num = 0
         self._sample_len = tact_l * tact_n

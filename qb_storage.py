@@ -3,7 +3,7 @@ qb_storage implement qb_abs_storage stuff.
 '''
 
 from os import path as ospath
-from typing import Iterable, TextIO
+from typing import Iterable, TextIO, Optional
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtMultimedia import QSoundEffect
@@ -55,8 +55,14 @@ class Storage(AbstractStorage):
 
     '_sound_is_loaded' checks that this sound is truly loaded (maybe with an error),
     calls the '_remove_out_queue' to sound, and if the sound is ready to play (correct),
-    sound will be added by the '_install_sound' callback and drawn by the '_draw_sound' callback.
-    (callbacks are inherited by the AbstractLoader)
+    calls '_apply_callbacks': sound will be added by the '_install_sound' callback,
+    drawn by the '_draw_sound' callback and '_update_view' display mapping.
+    (callbacks are inherited by the AbstractStorage)
+
+    '_store_in_queue' stores the sound in the '_sounds_queue' to avoid deletion
+    by the garbage collector, connects sound's status changing to the '_sound_is_loaded'
+    using lambda-slot, because there is no access to the 'sender' in this scope,
+    and also stores that slot in '_sounds_slots' for disconnection in the future.
 
     '_remove_out_queue' removes the sound out the '_sounds_queue',
     disconnects sound's status changing to the lambda-slot and removes it
@@ -114,10 +120,6 @@ class Storage(AbstractStorage):
     def _store_in_queue(self, sound: QSoundEffect) -> None:
         '''\
         Read a "Word about sound's adding policy" in the class docs.
-        '_store_in_queue' stores the sound in the '_sounds_queue' to avoid deletion
-        by the garbage collector, connects sound's status changing to the '_sound_is_loaded'
-        using lambda-slot, because there is no access to the 'sender' in this scope,
-        and also stores that slot in '_sounds_slots' for disconnection in the future.
         '''
 
         self._sounds_queue[id(sound)] = sound
@@ -144,7 +146,7 @@ class Storage(AbstractStorage):
         for sound_path, mapping_line in zip(paths, mapping):
             self.load_sound(sound_path, mapping_line)
 
-    def _upload_data(self, pjpath: str) -> tuple[Iterable | None]:
+    def _upload_data(self, pjpath: str) -> tuple[Optional[Iterable]]:
         '''\
         Upload data that is loaded by unload and return it.
         '''
@@ -156,7 +158,7 @@ class Storage(AbstractStorage):
             return None, None
         return paths, mapping
 
-    def __extract_file(self, pjpath: str) -> Iterable[Iterable[str] | Iterable[Iterable[int]]]:
+    def __extract_file(self, pjpath: str) -> Iterable[Iterable]:
         file = open(pjpath)
         lines = file.readlines()
         yield self.__extract_paths(lines)

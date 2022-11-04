@@ -1,15 +1,24 @@
-from sys import argv
+'''\
+'qbeater' is a main program.
+'''
+
+
+import sys
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout
 )
 
+from qb_abs_storage import AbstractSound
 import qb_player as qb
 import qb_ui as ui
 
 
-class DrumMachine_WindowComposer(QWidget):
+class DrumMachineWindowComposer(QWidget):
+    '''\
+    Controll widget's position.
+    '''
 
     def __init__(self) -> None:
         super().__init__()
@@ -18,6 +27,8 @@ class DrumMachine_WindowComposer(QWidget):
         self.setWindowIcon(QIcon('icons/icon.png'))
         self.setMinimumWidth(700)
 
+        self.cf_window = None
+
         self.layout = QVBoxLayout(self)
         self.setLayout(self.layout)
 
@@ -25,14 +36,14 @@ class DrumMachine_WindowComposer(QWidget):
         self.layout.addWidget(self.options)
 
         # Sound line id: sound line
-        self._sound_lines_book = dict()
+        self._sound_lines_book = {}
         # Button id: sound line id
-        self._del_btns_book = dict()
+        self._del_btns_book = {}
 
         # Button id: sound line id
-        self._sound_btns_book = dict()
+        self._sound_btns_book = {}
         # Sound line id: set(sound button id)
-        self._sound_btns_by_lines_book = dict()
+        self._sound_btns_by_lines_book = {}
 
     def _clear(self) -> None:
         for sound_line_id in frozenset(self._sound_lines_book):
@@ -79,7 +90,7 @@ class DrumMachine_WindowComposer(QWidget):
         sound_line.hide()
         self._unbook_sound_line(sound_line_id)
 
-    def _unbook_sound_line(self, sound_line_id) -> None:
+    def _unbook_sound_line(self, sound_line_id: int) -> None:
         for btn_id in self._sound_btns_by_lines_book[sound_line_id]:
             del self._sound_btns_book[btn_id]
         del self._sound_btns_by_lines_book[sound_line_id]
@@ -99,7 +110,10 @@ class DrumMachine_WindowComposer(QWidget):
         return sound_line_index - 1, sound_btn_index - 1
 
 
-class DrumMachine(DrumMachine_WindowComposer):
+class DrumMachine(DrumMachineWindowComposer):
+    '''\
+    Main App use DrumMachineWindowComposer to make ui for Player.
+    '''
 
     def __init__(self):
         super().__init__()
@@ -133,27 +147,27 @@ class DrumMachine(DrumMachine_WindowComposer):
                 if flag:
                     btn.change_color()
         
-    def _pjload_clicked(self):
+    def _pjload_clicked(self) -> None:
         pjpath = self.options.pjload_path.text()
         self.player.load_pj(pjpath)
         
-    def _pjstore_clicked(self):
+    def _pjstore_clicked(self) -> None:
         pjpath = self.options.pjstore_path.text()
         self.player.store_pj(pjpath)
 
     def _make_config_window(self) -> None:
-        self.cf = ui.ConfigWindow()
+        self.cf_window = ui.ConfigWindow()
         self.player.turn_off()
-        self.cf.show()
-        self.cf.ok_btn.clicked.connect(self._reconfig)
+        self.cf_window.show()
+        self.cf_window.ok_btn.clicked.connect(self._reconfig)
 
     def _reconfig(self) -> None:
-        time_sign = (self.cf.metre.value(), int(self.cf.length.currentText()))
-        tact_n = self.cf.tacts.value()
+        time_sign = (self.cf_window.metre.value(), int(self.cf_window.length.currentText()))
+        tact_n = self.cf_window.tacts.value()
         self.player.resize(time_sign, tact_n)
         self._redraw_lines()
-        self.cf.hide()
-        del self.cf
+        self.cf_window.hide()
+        del self.cf_window
 
     def _clear_field(self) -> None:
         titles = list('' for _ in range(len(self._sound_lines_book)))
@@ -190,11 +204,11 @@ class DrumMachine(DrumMachine_WindowComposer):
         self.player.turn_off()
         self.player.goto_start()
 
-    def _add_sound_clicked(self):
+    def _add_sound_clicked(self) -> None:
         sound_path = self.options.sound_path.text()
         self.player.add_sound(sound_path)
 
-    def _display_new_sound(self, sound) -> None:
+    def _display_new_sound(self, sound: AbstractSound) -> None:
         self._add_sound_line(sound.source(), self.player.get_tact_l(), self.player.get_tact_n())
 
     def _del_sound_line_slot(self) -> None:
@@ -210,7 +224,7 @@ class DrumMachine(DrumMachine_WindowComposer):
 
 
 if __name__ == '__main__':
-    app = QApplication(argv)
+    app = QApplication(sys.argv)
     machine = DrumMachine()
     machine.show()
-    exit(app.exec())
+    sys.exit(app.exec())

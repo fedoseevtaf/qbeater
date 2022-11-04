@@ -3,7 +3,7 @@
 '''
 
 
-from typing import Callable
+from typing import Callable, Iterable
 
 from qb_core import Sample
 
@@ -103,7 +103,7 @@ class AbstractStorage():
         Save project to the 'pjpath'.
         '''
 
-    def load_sound(self, sound_path: str) -> None:
+    def load_sound(self, sound_path: str, mapping: Iterable[int]) -> None:
         '''\
         Method that load sound and use callbacks
         after the successful loading.

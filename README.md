@@ -31,11 +31,17 @@ Prrogram with a drum-machine functionality
 - [X] Volume dynamic control
 - [X] Time signature preset
 - [X] Amount of tacts preset
-- [ ] Saving the project files
+- [X] Saving the project files
 
 ### System
 
-- OS: Windows 10 or later
+#### OS:
+- Windows 10 or later
+- Linux whatever
+
+#### Python
+
+- 3.5 or later
 
 ## Development
 
@@ -49,15 +55,15 @@ Prrogram with a drum-machine functionality
 > - [X] ~~Make MVP~~
 > - [X] ~~Join UI and core~~
 > - [ ] Pack the project with PyInstaller
-> - [ ] Make the ''
-
-### Architecture
-
-![Architecture scheme](stuff/arc_scheme.png)
+> - [ ] Make the build from source script
 
 ### Dependencies
 
 - PyQt5
+
+#### For build
+
+- PyInstaller
 
 ### Tools
 
