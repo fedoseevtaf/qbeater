@@ -9,7 +9,6 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtMultimedia import QSoundEffect
 
 from qb_abs_storage import AbstractStorage, AbstractSound
-from qb_core import Sample
 
 
 class Sound(AbstractSound):
@@ -190,8 +189,8 @@ class Storage(AbstractStorage):
 
     def __write_data(self, file: TextIO, mapping: Iterable[Iterable[int]],
                      sounds: list[AbstractSound]) -> None:
-        for sound, mapping in zip(sounds, mapping):
+        for sound, mapping_line in zip(sounds, mapping):
             file.write(ospath.abspath(sound.source()))
             file.write('\n')
-            file.write(''.join(map(str, mapping)))
+            file.write(''.join(map(str, mapping_line)))
             file.write('\n')

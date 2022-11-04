@@ -5,8 +5,6 @@
 
 from typing import Callable, Iterable
 
-from qb_core import Sample
-
 
 class AbstractSound():
     '''\
