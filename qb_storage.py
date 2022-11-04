@@ -159,7 +159,7 @@ class Storage(AbstractStorage):
         return paths, mapping
 
     def __extract_file(self, pjpath: str) -> Iterable[Iterable]:
-        file = open(pjpath)
+        file = open(pjpath, 'r', encoding='utf-8')
         lines = file.readlines()
         yield self.__extract_paths(lines)
         yield self.__extract_mapping(lines)
@@ -174,21 +174,23 @@ class Storage(AbstractStorage):
             line = lines[i].strip('\n')
             yield bytes(int(char) for char in line)
 
-    def unload_project(self, pjpath: str, sample: Sample, sounds: list[AbstractSound]) -> None:
+    def unload_project(self, pjpath: str, mapping: Iterable[Iterable[int]],
+                       sounds: list[AbstractSound]) -> None:
         '''\
         Save project to the 'path'.
         '''
 
         try:
-            file = open(pjpath, 'w')
-            self.__write_data(file, sample, sounds)
+            file = open(pjpath, 'w', encoding='utf-8')
+            self.__write_data(file, mapping, sounds)
             file.close()
         except:
             return self._display_notification(f'Error of saving the project ({pjpath})!')
         return
 
-    def __write_data(self, file: TextIO, sample: Sample, sounds: list[AbstractSound]) -> None:
-        for sound, mapping in zip(sounds, sample.view()):
+    def __write_data(self, file: TextIO, mapping: Iterable[Iterable[int]],
+                     sounds: list[AbstractSound]) -> None:
+        for sound, mapping in zip(sounds, mapping):
             file.write(ospath.abspath(sound.source()))
             file.write('\n')
             file.write(''.join(map(str, mapping)))

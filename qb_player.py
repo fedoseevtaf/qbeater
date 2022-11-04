@@ -33,6 +33,10 @@ class Player(AbstractSampleClient, AbstractStorageClient, storage=Storage):
         self._add_sound(sound, mapping)
         sound.set_volume(self._volume)
 
+    def _get_view(self) -> Iterable:
+        yield self.view()
+        yield self._sounds
+
     def play(self) -> None:
         '''\
         Run and implement playing cycle.

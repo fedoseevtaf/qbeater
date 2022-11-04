@@ -98,7 +98,8 @@ class AbstractStorage():
         Load project from the 'pjpath'.
         '''
 
-    def unload_project(self, pjpath: str, sample: Sample, sounds: list[AbstractSound]) -> None:
+    def unload_project(self, pjpath: str, mapping: Iterable[Iterable[int]],
+                       sounds: list[AbstractSound]) -> None:
         '''\
         Save project to the 'pjpath'.
         '''
@@ -164,4 +165,17 @@ class AbstractStorageClient():
         Facade for the 'AbstractStorage.upload_project'.
         '''
 
-        self._storage.unload_project(path, self._sample, self._sounds)
+        self._storage.unload_project(path, *self._get_view())
+
+    def _get_view(self) -> Iterable:
+        '''\
+        Should be implemented.
+        '''
+
+        return
+        yield
+
+    def _install_sound(self, sound: AbstractSound, mapping: Iterable[Iterable[int]]) -> Iterable:
+        '''\
+        Should be implemented.
+        '''
