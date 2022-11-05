@@ -5,7 +5,7 @@ as core implementation for ui.
 
 
 from time import perf_counter as get_now
-from typing import Iterable
+from typing import Iterable, Tuple
 
 from PyQt5.QtCore import QTimer
 
@@ -19,7 +19,7 @@ class Player(AbstractSampleClient, AbstractStorageClient, storage=Storage):
     Implementation for ui.
     '''
 
-    def __init__(self, /, time_sign: tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
+    def __init__(self, /, time_sign: Tuple[int] = (4, 8), bpm: int = 90, tact_n: int = 3) -> None:
         super().__init__(time_sign=time_sign, bpm=bpm, tact_n=tact_n)
 
         self._volume = 0
@@ -76,7 +76,7 @@ class Player(AbstractSampleClient, AbstractStorageClient, storage=Storage):
         self._set_bpm(bpm)
         self._period = 60 / self.bpm / (self.time_sign[1] / 4)
 
-    def resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
+    def resize(self, time_sign: Tuple[int] = (4, 8), tact_n: int = 3) -> None:
         '''\
         Reuse inherited 'resize' and set a '_period'.
         '''

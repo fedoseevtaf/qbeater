@@ -3,7 +3,7 @@ qb_core provides tools for sounds's mapping.
 '''
 
 
-from typing import Iterable
+from typing import Iterable, Tuple, List
 
 
 class Sample():
@@ -26,7 +26,7 @@ class Sample():
         self.tact_n = tact_n
 
         self._sounds = sounds
-        self._mapping: list[bytearray] = []
+        self._mapping: List[bytearray] = []
 
         self._actual_beat_num = 0
         self._sample_len = tact_l * tact_n
@@ -122,8 +122,8 @@ class AbstractSampleClient():
     make facade for it.
     '''
 
-    def __init__(self, /, time_sign: tuple[int] = (4, 8),
-                     bpm: int = 90, tact_n: int = 3,) -> None:
+    def __init__(self, /, time_sign: Tuple[int] = (4, 8),
+                 bpm: int = 90, tact_n: int = 3,) -> None:
         '''\
         The 'time signature' is a musician term, read about it on wiki.
         https://en.wikipedia.org/wiki/Time_signature
@@ -146,7 +146,7 @@ class AbstractSampleClient():
 
         self._set_bpm(bpm)
 
-    def resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
+    def resize(self, time_sign: Tuple[int] = (4, 8), tact_n: int = 3) -> None:
         '''\
         Sample.resize, but using the time signature.
         This function probably will be reimplemented.
@@ -170,7 +170,7 @@ class AbstractSampleClient():
 
         self.bpm = bpm
 
-    def _resize(self, time_sign: tuple[int] = (4, 8), tact_n: int = 3) -> None:
+    def _resize(self, time_sign: Tuple[int] = (4, 8), tact_n: int = 3) -> None:
         '''\
         Minimal implementation that probably will be used
         at 'resize' future implementation.

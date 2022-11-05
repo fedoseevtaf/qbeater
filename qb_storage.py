@@ -3,7 +3,7 @@ qb_storage implement qb_abs_storage stuff.
 '''
 
 from os import path as ospath
-from typing import Iterable, TextIO, Optional
+from typing import Iterable, TextIO, Optional, Tuple, List
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtMultimedia import QSoundEffect
@@ -145,7 +145,7 @@ class Storage(AbstractStorage):
         for sound_path, mapping_line in zip(paths, mapping):
             self.load_sound(sound_path, mapping_line)
 
-    def _upload_data(self, pjpath: str) -> tuple[Optional[Iterable]]:
+    def _upload_data(self, pjpath: str) -> Tuple[Optional[Iterable]]:
         '''\
         Upload data that is loaded by unload and return it.
         '''
@@ -164,17 +164,17 @@ class Storage(AbstractStorage):
         yield self.__extract_mapping(lines)
         file.close()
 
-    def __extract_paths(self, lines: list[str]) -> Iterable[str]:
+    def __extract_paths(self, lines: List[str]) -> Iterable[str]:
         for i in range(0, len(lines), 2):
             yield lines[i].strip('\n')
 
-    def __extract_mapping(self, lines: list[str]) -> Iterable[Iterable[int]]:
+    def __extract_mapping(self, lines: List[str]) -> Iterable[Iterable[int]]:
         for i in range(1, len(lines), 2):
             line = lines[i].strip('\n')
             yield bytes(int(char) for char in line)
 
     def unload_project(self, pjpath: str, mapping: Iterable[Iterable[int]],
-                       sounds: list[AbstractSound]) -> None:
+                       sounds: List[AbstractSound]) -> None:
         '''\
         Save project to the 'path'.
         '''
@@ -188,7 +188,7 @@ class Storage(AbstractStorage):
         return
 
     def __write_data(self, file: TextIO, mapping: Iterable[Iterable[int]],
-                     sounds: list[AbstractSound]) -> None:
+                     sounds: List[AbstractSound]) -> None:
         for sound, mapping_line in zip(sounds, mapping):
             file.write(ospath.abspath(sound.source()))
             file.write('\n')

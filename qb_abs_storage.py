@@ -3,7 +3,7 @@
 '''
 
 
-from typing import Callable, Iterable
+from typing import Callable, Iterable, List
 
 
 class AbstractSound():
@@ -97,7 +97,7 @@ class AbstractStorage():
         '''
 
     def unload_project(self, pjpath: str, mapping: Iterable[Iterable[int]],
-                       sounds: list[AbstractSound]) -> None:
+                       sounds: List[AbstractSound]) -> None:
         '''\
         Save project to the 'pjpath'.
         '''

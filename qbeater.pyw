@@ -4,6 +4,7 @@
 
 
 import sys
+from typing import Tuple
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
@@ -99,7 +100,7 @@ class DrumMachineWindowComposer(QWidget):
         del self._del_btns_book[delbtn_id]
         del self._sound_lines_book[sound_line_id]
 
-    def _sound_btn_clicked_slot(self) -> tuple[int]:
+    def _sound_btn_clicked_slot(self) -> Tuple[int]:
         btn = self.sender()
         btn_id = id(btn)
         sound_line_id = self._sound_btns_book[btn_id]
