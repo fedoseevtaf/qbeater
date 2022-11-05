@@ -6,6 +6,50 @@ Drum machine with electronic sound.
 
 - [Download]()
 
+### Build from source
+
+- [Download source (github)](https://github.com/fedoseevtaf/qbeater/archive/refs/heads/main.zip)
+
+#### Dependencies
+
+- Python 3.8 or later
+
+#### Tutorial
+
+- Unzip archive
+- Open terminal in folder with code
+- Run on terminal:
+
+#### Windows
+
+Don't use PowerShell instead of cmd.
+
+> py -m venv .\ \
+scripts\activate.bat\
+pip install --upgrade pip\
+pip install -r requirements.txt\
+pip install -r requirements_for_build.txt\
+pyinstaller --nowindowed ^\
+            --add-data=icons;icons ^\
+            --add-data=sound;sound ^\
+            --add-data=basic.qbp;. ^\
+            qbeater.pyw\
+scripts\deactivate.bat
+
+#### Linux
+
+> python3 -m venv .\ \
+bin/activate\
+pip install --upgrade pip\
+pip install -r requirements.txt\
+pip install -r requirements_for_build.txt\
+pyinstaller --nowindowed \ \
+            --add-data=icons;icons \ \
+            --add-data=sound;sound \ \
+            --add-data=basic.qbp;. \ \
+            qbeater.pyw\
+bin/deactivate
+
 ## SRS
 
 ### Goal
@@ -35,13 +79,7 @@ Prrogram with a drum-machine functionality
 
 ### System
 
-#### OS:
-- Windows 10 or later
-- Linux whatever
-
-#### Python
-
-- 3.5 or later
+- OS Windows 10 or later
 
 ## Development
 
