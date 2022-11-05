@@ -34,7 +34,7 @@ pyinstaller --nowindowed ^\
             --add-data=sound;sound ^\
             --add-data=basic.qbp;. ^\
             qbeater.pyw\
-scripts\deactivate.bat
+deactivate
 
 #### Linux
 
