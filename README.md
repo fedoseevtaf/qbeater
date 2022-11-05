@@ -4,7 +4,7 @@ Drum machine with electronic sound.
 
 ## For user:
 
-- [Download]()
+- [Download](https://github.com/fedoseevtaf/qbeater/archive/refs/heads/dist.zip)
 
 ### Build from source
 
