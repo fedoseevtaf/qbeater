@@ -44,9 +44,9 @@ pip install --upgrade pip\
 pip install -r requirements.txt\
 pip install -r requirements_for_build.txt\
 pyinstaller --nowindowed \ \
-            --add-data=icons;icons \ \
-            --add-data=sound;sound \ \
-            --add-data=basic.qbp;. \ \
+            --add-data=icons:icons \ \
+            --add-data=sound:sound \ \
+            --add-data=basic.qbp:. \ \
             qbeater.pyw\
 deactivate
 
