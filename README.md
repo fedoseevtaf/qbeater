@@ -39,7 +39,7 @@ scripts\deactivate.bat
 #### Linux
 
 > python3 -m venv .\ \
-bin/activate\
+source bin/activate\
 pip install --upgrade pip\
 pip install -r requirements.txt\
 pip install -r requirements_for_build.txt\
@@ -48,7 +48,7 @@ pyinstaller --nowindowed \ \
             --add-data=sound;sound \ \
             --add-data=basic.qbp;. \ \
             qbeater.pyw\
-bin/deactivate
+deactivate
 
 - After that you can find the build in `dist/qbeater`
 
