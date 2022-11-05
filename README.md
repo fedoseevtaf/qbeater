@@ -14,7 +14,7 @@ Drum machine with electronic sound.
 
 - Python 3.8 or later
 
-#### Tutorial
+#### Step by step
 
 - Unzip archive
 - Open terminal in folder with code
@@ -50,6 +50,8 @@ pyinstaller --nowindowed \ \
             qbeater.pyw\
 bin/deactivate
 
+- After that you can find the build in `dist/qbeater`
+
 ## SRS
 
 ### Goal
@@ -80,6 +82,7 @@ Prrogram with a drum-machine functionality
 ### System
 
 - OS Windows 10 or later
+- Linux (only build from source)
 
 ## Development
 
@@ -92,8 +95,8 @@ Prrogram with a drum-machine functionality
 > - [X] ~~Create the full UI~~
 > - [X] ~~Make MVP~~
 > - [X] ~~Join UI and core~~
-> - [ ] Pack the project with PyInstaller
-> - [ ] Make the build from source script
+> - [X] ~~Pack the project with PyInstaller~~
+> - [X] ~~Make the build from source tutorial~~
 
 ### Dependencies
 
