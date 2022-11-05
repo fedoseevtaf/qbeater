@@ -24,7 +24,7 @@ Drum machine with electronic sound.
 
 Don't use PowerShell instead of cmd.
 
-> py -m venv .\ \
+> py -m venv ./ \
 scripts\activate.bat\
 pip install --upgrade pip\
 pip install -r requirements.txt\
