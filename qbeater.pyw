@@ -171,10 +171,10 @@ class DrumMachine(DrumMachineWindowComposer):
 
     def _clear_field(self) -> None:
         titles = list('' for _ in range(len(self._sound_lines_book)))
-        for i, line_id in enumerate(frozenset(self._sound_lines_book)):
-            sound_line = self._sound_lines_book[line_id]
-            line_index = self.layout.indexOf(sound_line)
-            titles[line_index + i - 1] = sound_line.header.label.text()
+        for line_index in range(len(self._sound_lines_book)):
+            sound_line = self.layout.itemAt(1).widget()
+            line_id = id(sound_line)
+            titles[line_index] = sound_line.header.label.text()
             self._del_sound_line(line_id)
         return titles
 
